@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{129B0A58-0B0E-4214-B4CF-C17D7CDE52FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceApp.Business", "FinanceApp.Business\FinanceApp.Business.csproj", "{A15F69A7-2AFD-4ED6-8D51-437A960DECB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{129B0A58-0B0E-4214-B4CF-C17D7CDE52FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{129B0A58-0B0E-4214-B4CF-C17D7CDE52FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{129B0A58-0B0E-4214-B4CF-C17D7CDE52FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A15F69A7-2AFD-4ED6-8D51-437A960DECB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A15F69A7-2AFD-4ED6-8D51-437A960DECB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A15F69A7-2AFD-4ED6-8D51-437A960DECB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A15F69A7-2AFD-4ED6-8D51-437A960DECB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,5 +40,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B67755CA-1A68-4943-B04E-6D2495332503} = {C31DB2D6-78BB-45D9-B44F-B7B2E7DF84F0}
 		{129B0A58-0B0E-4214-B4CF-C17D7CDE52FF} = {50E606DB-43ED-4E08-8054-332B033EDB62}
+		{A15F69A7-2AFD-4ED6-8D51-437A960DECB5} = {A17832B3-1D84-4198-866F-11DAF3227348}
 	EndGlobalSection
 EndGlobal
