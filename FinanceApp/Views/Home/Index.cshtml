@@ -1,8 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Hoş Geldiniz FinanceApp</h2>
+<p>Aşağıdaki yönetimsel arayüz ekranlarına ulaşmak için ilgili linkleri kullanabilirsiniz:</p>
+<ul>
+    <li><a href="@Url.Action("Index", "Agreement")">Anlaşmalar</a></li>
+    <li><a href="@Url.Action("Index", "BusinessPartner")">İş Ortakları</a></li>
+    <li><a href="@Url.Action("Index", "Job")">İş Konuları</a></li>
+    <li><a href="@Url.Action("Index", "RiskAnalysis")">Risk Analizi</a></li>
+    <li><a href="@Url.Action("Index", "Evaluation")">Değerlendirme</a></li>
+</ul>

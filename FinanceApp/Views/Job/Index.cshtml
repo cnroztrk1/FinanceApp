@@ -1,0 +1,37 @@
+﻿@model IEnumerable<FinanceApp.Data.Entities.Jobs>
+@{
+    ViewData["Title"] = "İş Konuları";
+}
+
+<h2>İş Konuları</h2>
+
+<a class="btn btn-primary" href="@Url.Action("Create", "Job")">Yeni İş Konusu Ekle</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Başlık</th>
+            <th>Açıklama</th>
+            <th>Alınma Tarihi</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var job in Model)
+        {
+            <tr>
+                <td>@job.Id</td>
+                <td>@job.Title</td>
+                <td>@job.Description</td>
+                <td>@job.ReceivedDate.ToShortDateString()</td>
+                <td>@job.Status</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Job", new { id = job.Id })">Düzenle</a> |
+                    <a href="@Url.Action("Delete", "Job", new { id = job.Id })">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

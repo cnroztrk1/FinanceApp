@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.Collections.Generic;
 
 namespace FinanceApp.Data.Entities
 {
@@ -10,7 +11,8 @@ namespace FinanceApp.Data.Entities
         public string PhoneNumber { get; set; }      
         public string Address { get; set; }
 
-       // İş ortaklarına gelen iş konuları için fk
+        // İş ortaklarına gelen iş konuları için fk
+        [ValidateNever]
         public ICollection<Jobs> Jobs { get; set; }   
     }
 }

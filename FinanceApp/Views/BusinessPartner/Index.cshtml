@@ -1,0 +1,37 @@
+﻿@model IEnumerable<FinanceApp.Data.Entities.Partners>
+@{
+    ViewData["Title"] = "İş Ortakları";
+}
+
+<h2>İş Ortakları</h2>
+
+<a class="btn btn-primary" href="@Url.Action("Create", "BusinessPartner")">Yeni İş Ortağı Ekle</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>E-Posta</th>
+            <th>Telefon</th>
+            <th>Adres</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var partner in Model)
+        {
+            <tr>
+                <td>@partner.Id</td>
+                <td>@partner.Name</td>
+                <td>@partner.ContactEmail</td>
+                <td>@partner.PhoneNumber</td>
+                <td>@partner.Address</td>
+                <td>
+                    <a href="@Url.Action("Edit", "BusinessPartner", new { id = partner.Id })">Düzenle</a> |
+                    <a href="@Url.Action("Delete", "BusinessPartner", new { id = partner.Id })">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

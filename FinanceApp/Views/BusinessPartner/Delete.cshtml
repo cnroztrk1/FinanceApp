@@ -1,0 +1,23 @@
+﻿@model FinanceApp.Data.Entities.Partners
+@{
+    ViewData["Title"] = "İş Ortağı Sil";
+}
+
+<h2>İş Ortağı Sil</h2>
+<h3>Bu iş ortağını silmek istediğinize emin misiniz?</h3>
+<div>
+    <h4>İş Ortağı</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">ID</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+        <dt class="col-sm-2">İsim</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

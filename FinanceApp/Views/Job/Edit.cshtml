@@ -1,0 +1,51 @@
+﻿@model FinanceApp.Presentation.Models.JobCreateViewModel
+@{
+    ViewData["Title"] = "İş Konusu Düzenle";
+}
+
+<h2>İş Konusu Düzenle</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Job.Id" />
+    <div class="form-group">
+        <label asp-for="Job.Title"></label>
+        <input asp-for="Job.Title" class="form-control" />
+        <span asp-validation-for="Job.Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Job.Description"></label>
+        <textarea asp-for="Job.Description" class="form-control"></textarea>
+        <span asp-validation-for="Job.Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Job.ReceivedDate"></label>
+        <input asp-for="Job.ReceivedDate" type="date" class="form-control" />
+        <span asp-validation-for="Job.ReceivedDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Job.Status"></label>
+        <input asp-for="Job.Status" class="form-control" />
+        <span asp-validation-for="Job.Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>İş Ortağı Seçiniz</label>
+        <select asp-for="Job.BusinessPartnerId" asp-items="Model.BusinessPartners" class="form-control">
+            <option value="">Seçiniz</option>
+        </select>
+        <span asp-validation-for="Job.BusinessPartnerId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Anlaşma Seçiniz</label>
+        <select asp-for="Job.AgreementId" asp-items="Model.Agreements" class="form-control">
+            <option value="">Seçiniz</option>
+        </select>
+        <span asp-validation-for="Job.AgreementId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
