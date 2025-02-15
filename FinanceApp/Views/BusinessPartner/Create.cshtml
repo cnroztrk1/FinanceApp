@@ -1,36 +1,29 @@
 ﻿@model FinanceApp.Data.Entities.Partners
+
 @{
-    ViewData["Title"] = "Yeni İş Ortağı Oluştur";
+    ViewData["Title"] = "Yeni İş Ortağı";
 }
 
-<h2>Yeni İş Ortağı Oluştur</h2>
+<h2>Yeni İş Ortağı</h2>
 
-<form asp-action="Create" method="post">
+<form asp-action="Create">
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="Name">Ad</label>
+        <input asp-for="Name" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="ContactEmail"></label>
-        <input asp-for="ContactEmail" class="form-control" />
-        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+        <label asp-for="ContactEmail">İletişim E-Posta</label>
+        <input asp-for="ContactEmail" type="email" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        <label asp-for="PhoneNumber">Telefon</label>
+        <input asp-for="PhoneNumber" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+        <label asp-for="Address">Adres</label>
+        <textarea asp-for="Address" class="form-control"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Oluştur</button>
+    <input type="hidden" asp-for="TenantId" value="@ViewBag.TenantId" />
+    <button type="submit" class="btn btn-success">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">Geri</a>
 </form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

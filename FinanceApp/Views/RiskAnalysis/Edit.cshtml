@@ -1,56 +1,32 @@
 ﻿@model FinanceApp.Presentation.Models.RiskAnalysisCreateViewModel
+
 @{
-    ViewData["Title"] = "Risk Analizi Düzenle";
+    ViewData["Title"] = "Risk Analizini Düzenle";
 }
 
-<h2>Risk Analizi Düzenle</h2>
+<h2>Risk Analizini Düzenle</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit">
     <input type="hidden" asp-for="RiskAnalysis.Id" />
     <div class="form-group">
-        <label asp-for="RiskAnalysis.RiskAmount"></label>
-        <input asp-for="RiskAnalysis.RiskAmount" class="form-control" />
-        <span asp-validation-for="RiskAnalysis.RiskAmount" class="text-danger"></span>
+        <label asp-for="RiskAnalysis.RiskAmount">Risk Miktarı</label>
+        <input asp-for="RiskAnalysis.RiskAmount" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="RiskAnalysis.AnalysisDate"></label>
-        <input asp-for="RiskAnalysis.AnalysisDate" type="date" class="form-control" />
-        <span asp-validation-for="RiskAnalysis.AnalysisDate" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="RiskAnalysis.Comments"></label>
+        <label asp-for="RiskAnalysis.Comments">Açıklamalar</label>
         <textarea asp-for="RiskAnalysis.Comments" class="form-control"></textarea>
-        <span asp-validation-for="RiskAnalysis.Comments" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label>İş Seçiniz</label>
-        <select id="jobDropdown" asp-for="RiskAnalysis.JobId" asp-items="Model.Jobs" class="form-control">
-            <option value="">Seçiniz</option>
-        </select>
-        <span asp-validation-for="RiskAnalysis.JobId" class="text-danger"></span>
+        <label asp-for="RiskAnalysis.AnalysisDate">Analiz Tarihi</label>
+        <input asp-for="RiskAnalysis.AnalysisDate" type="date" class="form-control" required />
     </div>
-    <input type="hidden" asp-for="RiskAnalysis.AgreementId" id="agreementHidden" />
-    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <div class="form-group">
+        <label asp-for="RiskAnalysis.JobId">İş</label>
+        <select asp-for="RiskAnalysis.JobId" asp-items="Model.Jobs" class="form-control">
+            <option value="">Seçiniz...</option>
+        </select>
+    </div>
+    <input type="hidden" asp-for="RiskAnalysis.TenantId" value="@Model.RiskAnalysis.TenantId" />
+    <button type="submit" class="btn btn-success">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">Geri</a>
 </form>
-
-@section Scripts {
-    <script>
-        var jobAgreements = @Html.Raw(Model.JobAgreementsJson);
-        // Sayfa yüklendiğinde eğer job seçiliyse hidden input'a değer aktar
-        var selectedJobId = $("#jobDropdown").val();
-        if(selectedJobId && jobAgreements[selectedJobId]){
-            $("#agreementHidden").val(jobAgreements[selectedJobId]);
-        }
-        $("#jobDropdown").change(function () {
-            var selectedJobId = $(this).val();
-            if (selectedJobId && jobAgreements[selectedJobId]) {
-                $("#agreementHidden").val(jobAgreements[selectedJobId]);
-            } else {
-                $("#agreementHidden").val('');
-            }
-        });
-    </script>
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

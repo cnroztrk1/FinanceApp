@@ -1,7 +1,8 @@
 ﻿using Data.UnitOfWork;
-using FinanceApp.Data;
 using FinanceApp.Data.Entities;
+using FinanceApp.Common;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FinanceApp.Business.Services
@@ -9,38 +10,45 @@ namespace FinanceApp.Business.Services
     public class BusinessPartnerService : IPartnersService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly int _tenantId;
 
-        public BusinessPartnerService(IUnitOfWork unitOfWork)
+        public BusinessPartnerService(IUnitOfWork unitOfWork, ITenantProvider tenantProvider)
         {
             _unitOfWork = unitOfWork;
+            _tenantId = tenantProvider.TenantId;
         }
 
         public async Task<IEnumerable<Partners>> GetAllPartnersAsync()
         {
-            return await _unitOfWork.Partners.GetAllAsync();
+            return (await _unitOfWork.Partners.GetAllAsync()).Where(p => p.TenantId == _tenantId);
         }
 
         public async Task<Partners> GetPartnerByIdAsync(int id)
         {
-            return await _unitOfWork.Partners.GetByIdAsync(id);
+            var partner = await _unitOfWork.Partners.GetByIdAsync(id);
+            return partner?.TenantId == _tenantId ? partner : null;
         }
 
         public async Task CreatePartnerAsync(Partners partner)
         {
+            partner.TenantId = _tenantId;
             await _unitOfWork.Partners.AddAsync(partner);
             await _unitOfWork.CompleteAsync();
         }
 
         public async Task UpdatePartnerAsync(Partners partner)
         {
-            _unitOfWork.Partners.Update(partner);
-            await _unitOfWork.CompleteAsync();
+            if (partner.TenantId == _tenantId)
+            {
+                _unitOfWork.Partners.Update(partner);
+                await _unitOfWork.CompleteAsync();
+            }
         }
 
         public async Task DeletePartnerAsync(int id)
         {
             var partner = await _unitOfWork.Partners.GetByIdAsync(id);
-            if (partner != null)
+            if (partner != null && partner.TenantId == _tenantId)
             {
                 _unitOfWork.Partners.Remove(partner);
                 await _unitOfWork.CompleteAsync();

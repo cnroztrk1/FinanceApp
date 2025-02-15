@@ -1,23 +1,21 @@
 ﻿@model FinanceApp.Data.Entities.RiskAnalysis
+
 @{
-    ViewData["Title"] = "Risk Analizi Sil";
+    ViewData["Title"] = "Risk Analizini Sil";
 }
 
-<h2>Risk Analizi Sil</h2>
+<h2>Risk Analizini Sil</h2>
+
 <h3>Bu risk analizini silmek istediğinize emin misiniz?</h3>
 <div>
-    <h4>Risk Analizi</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">ID</dt>
-        <dd class="col-sm-10">@Model.Id</dd>
-        <dt class="col-sm-2">Risk Tutarı</dt>
-        <dd class="col-sm-10">@Model.RiskAmount</dd>
-    </dl>
+    <p><strong>Risk Miktarı:</strong> @Model.RiskAmount</p>
+    <p><strong>Açıklamalar:</strong> @Model.Comments</p>
+    <p><strong>Analiz Tarihi:</strong> @Model.AnalysisDate.ToShortDateString()</p>
 </div>
 
-<form asp-action="Delete" method="post">
+<form asp-action="DeleteConfirmed" asp-controller="RiskAnalysis" method="post">
     <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Sil</button>
+    <input type="hidden" asp-for="TenantId" value="@Model.TenantId" />
+    <button type="submit" class="btn btn-danger">Evet, Sil</button>
     <a asp-action="Index" class="btn btn-secondary">İptal</a>
 </form>

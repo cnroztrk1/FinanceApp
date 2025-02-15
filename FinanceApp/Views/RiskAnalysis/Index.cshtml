@@ -1,33 +1,33 @@
 ﻿@model IEnumerable<FinanceApp.Data.Entities.RiskAnalysis>
+
 @{
     ViewData["Title"] = "Risk Analizleri";
 }
 
 <h2>Risk Analizleri</h2>
-
-<a class="btn btn-primary" href="@Url.Action("Create", "RiskAnalysis")">Yeni Risk Analizi Ekle</a>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Risk Analizi Ekle</a>
+</p>
 
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Risk Tutarı</th>
+            <th>Risk Miktarı</th>
+            <th>Açıklamalar</th>
             <th>Analiz Tarihi</th>
-            <th>Açıklama</th>
             <th>İşlemler</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var risk in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@risk.Id</td>
-                <td>@risk.RiskAmount</td>
-                <td>@risk.AnalysisDate.ToShortDateString()</td>
-                <td>@risk.Comments</td>
+                <td>@item.RiskAmount</td>
+                <td>@item.Comments</td>
+                <td>@item.AnalysisDate.ToShortDateString()</td>
                 <td>
-                    <a href="@Url.Action("Edit", "RiskAnalysis", new { id = risk.Id })">Düzenle</a> |
-                    <a href="@Url.Action("Delete", "RiskAnalysis", new { id = risk.Id })">Sil</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Düzenle</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Sil</a>
                 </td>
             </tr>
         }

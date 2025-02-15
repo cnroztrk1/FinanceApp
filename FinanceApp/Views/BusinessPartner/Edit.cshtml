@@ -1,37 +1,30 @@
 ﻿@model FinanceApp.Data.Entities.Partners
+
 @{
-    ViewData["Title"] = "İş Ortağı Düzenle";
+    ViewData["Title"] = "İş Ortağını Düzenle";
 }
 
-<h2>İş Ortağı Düzenle</h2>
+<h2>İş Ortağını Düzenle</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="Name">Ad</label>
+        <input asp-for="Name" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="ContactEmail"></label>
-        <input asp-for="ContactEmail" class="form-control" />
-        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+        <label asp-for="ContactEmail">İletişim E-Posta</label>
+        <input asp-for="ContactEmail" type="email" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        <label asp-for="PhoneNumber">Telefon</label>
+        <input asp-for="PhoneNumber" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+        <label asp-for="Address">Adres</label>
+        <textarea asp-for="Address" class="form-control"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <input type="hidden" asp-for="TenantId" value="@Model.TenantId" />
+    <button type="submit" class="btn btn-success">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">Geri</a>
 </form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

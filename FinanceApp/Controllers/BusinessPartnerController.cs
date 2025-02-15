@@ -1,6 +1,8 @@
 ﻿using FinanceApp.Business.Services;
+using FinanceApp.Common;
 using FinanceApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
@@ -8,53 +10,52 @@ namespace FinanceApp.Presentation.Controllers
     public class BusinessPartnerController : Controller
     {
         private readonly IPartnersService _partnerService;
+        private readonly int _tenantId;
 
-        public BusinessPartnerController(IPartnersService partnerService)
+        public BusinessPartnerController(IPartnersService partnerService, ITenantProvider tenantProvider)
         {
             _partnerService = partnerService;
+            _tenantId = tenantProvider.TenantId;
         }
 
-        // Liste ekranı: /BusinessPartner/Index
         public async Task<IActionResult> Index()
         {
             var partners = await _partnerService.GetAllPartnersAsync();
-            return View(partners);
+            return View(partners.Where(p => p.TenantId == _tenantId));
         }
 
-        // Yeni iş ortağı oluşturma ekranı (GET): /BusinessPartner/Create
         public IActionResult Create()
         {
+            ViewBag.TenantId = _tenantId;
             return View();
         }
 
-        // Yeni iş ortağı kaydı (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Partners partner)
         {
             if (ModelState.IsValid)
             {
+                partner.TenantId = _tenantId;
                 await _partnerService.CreatePartnerAsync(partner);
                 return RedirectToAction(nameof(Index));
             }
             return View(partner);
         }
 
-        // İş ortağı düzenleme ekranı (GET): /BusinessPartner/Edit/{id}
         public async Task<IActionResult> Edit(int id)
         {
             var partner = await _partnerService.GetPartnerByIdAsync(id);
-            if (partner == null)
+            if (partner == null || partner.TenantId != _tenantId)
                 return NotFound();
             return View(partner);
         }
 
-        // İş ortağı düzenleme (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Partners partner)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && partner.TenantId == _tenantId)
             {
                 await _partnerService.UpdatePartnerAsync(partner);
                 return RedirectToAction(nameof(Index));
@@ -62,21 +63,23 @@ namespace FinanceApp.Presentation.Controllers
             return View(partner);
         }
 
-        // Silme onayı için Delete ekranı (GET): /BusinessPartner/Delete/{id}
         public async Task<IActionResult> Delete(int id)
         {
             var partner = await _partnerService.GetPartnerByIdAsync(id);
-            if (partner == null)
+            if (partner == null || partner.TenantId != _tenantId)
                 return NotFound();
             return View(partner);
         }
 
-        // Silme işlemi (POST)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _partnerService.DeletePartnerAsync(id);
+            var partner = await _partnerService.GetPartnerByIdAsync(id);
+            if (partner != null && partner.TenantId == _tenantId)
+            {
+                await _partnerService.DeletePartnerAsync(id);
+            }
             return RedirectToAction(nameof(Index));
         }
     }

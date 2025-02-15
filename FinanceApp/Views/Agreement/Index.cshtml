@@ -1,64 +1,37 @@
 ﻿@model IEnumerable<FinanceApp.Data.Entities.Agreement>
+
 @{
     ViewData["Title"] = "Anlaşmalar";
 }
 
 <h2>Anlaşmalar</h2>
-
-<!-- Otomatik tamamlama için arama kutusu -->
-<input type="text" id="searchBox" placeholder="Anlaşma ara..." />
-
-<!-- Filtreleme formu (örnek) -->
-<form id="filterForm">
-    <input type="text" name="name" placeholder="Adına göre filtrele" />
-    <input type="date" name="startDate" />
-    <button type="submit">Filtrele</button>
-</form>
-
-<a class="btn btn-primary" href="@Url.Action("Create", "Agreement")">Yeni Anlaşma Ekle</a>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Anlaşma Ekle</a>
+</p>
 
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Ad</th>
             <th>Açıklama</th>
             <th>Başlangıç Tarihi</th>
+            <th>Durum</th>
             <th>İşlemler</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var agreement in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@agreement.Id</td>
-                <td>@agreement.Name</td>
-                <td>@agreement.Description</td>
-                <td>@agreement.StartDate.ToShortDateString()</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.StartDate.ToShortDateString()</td>
+                <td>@(item.IsActive ? "Aktif" : "Pasif")</td>
                 <td>
-                    <a href="@Url.Action("Edit", "Agreement", new { id = agreement.Id })">Düzenle</a> |
-                    <a href="@Url.Action("Delete", "Agreement", new { id = agreement.Id })">Sil</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Düzenle</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Sil</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@section Scripts {
-    <script>
-        $(function () {
-            $("#searchBox").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: '@Url.Action("Search", "Agreement")',
-                        data: { term: request.term },
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                minLength: 2
-            });
-        });
-    </script>
-}

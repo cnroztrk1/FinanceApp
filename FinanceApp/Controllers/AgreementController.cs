@@ -1,7 +1,7 @@
 ﻿using FinanceApp.Business.Services;
+using FinanceApp.Common;
 using FinanceApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,53 +10,52 @@ namespace FinanceApp.Presentation.Controllers
     public class AgreementController : Controller
     {
         private readonly IAgreementService _agreementService;
+        private readonly int _tenantId;
 
-        public AgreementController(IAgreementService agreementService)
+        public AgreementController(IAgreementService agreementService, ITenantProvider tenantProvider)
         {
             _agreementService = agreementService;
+            _tenantId = tenantProvider.TenantId;
         }
 
-        // Liste ekranı: /Agreement/Index
         public async Task<IActionResult> Index()
         {
             var agreements = await _agreementService.GetAllAgreementsAsync();
-            return View(agreements);
+            return View(agreements.Where(a => a.TenantId == _tenantId));
         }
 
-        // Yeni anlaşma oluşturma ekranı (GET): /Agreement/Create
         public IActionResult Create()
         {
+            ViewBag.TenantId = _tenantId;
             return View();
         }
 
-        // Yeni anlaşma kaydı (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Agreement agreement)
         {
             if (ModelState.IsValid)
             {
+                agreement.TenantId = _tenantId;
                 await _agreementService.CreateAgreementAsync(agreement);
                 return RedirectToAction(nameof(Index));
             }
             return View(agreement);
         }
 
-        // Anlaşma güncelleme ekranı (GET): /Agreement/Edit/{id}
         public async Task<IActionResult> Edit(int id)
         {
             var agreement = await _agreementService.GetAgreementByIdAsync(id);
-            if (agreement == null)
+            if (agreement == null || agreement.TenantId != _tenantId)
                 return NotFound();
             return View(agreement);
         }
 
-        // Anlaşma güncelleme (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Agreement agreement)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && agreement.TenantId == _tenantId)
             {
                 await _agreementService.UpdateAgreementAsync(agreement);
                 return RedirectToAction(nameof(Index));
@@ -64,33 +63,24 @@ namespace FinanceApp.Presentation.Controllers
             return View(agreement);
         }
 
-        // Silme onayı için Delete ekranı (GET): /Agreement/Delete/{id}
         public async Task<IActionResult> Delete(int id)
         {
             var agreement = await _agreementService.GetAgreementByIdAsync(id);
-            if (agreement == null)
+            if (agreement == null || agreement.TenantId != _tenantId)
                 return NotFound();
             return View(agreement);
         }
 
-        // Silme işlemi (POST)
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _agreementService.DeleteAgreementAsync(id);
+            var agreement = await _agreementService.GetAgreementByIdAsync(id);
+            if (agreement != null && agreement.TenantId == _tenantId)
+            {
+                await _agreementService.DeleteAgreementAsync(id);
+            }
             return RedirectToAction(nameof(Index));
-        }
-
-        // Otomatik tamamlama örneği: /Agreement/Search?term=...
-        public async Task<IActionResult> Search(string term)
-        {
-            var agreements = await _agreementService.GetAllAgreementsAsync();
-            var results = agreements
-                          .Where(a => a.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
-                          .Select(a => a.Name)
-                          .ToList();
-            return Json(results);
         }
     }
 }

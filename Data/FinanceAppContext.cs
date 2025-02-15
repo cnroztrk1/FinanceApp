@@ -23,6 +23,13 @@ namespace FinanceApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // TenantId eklenen modeller
+            modelBuilder.Entity<Agreement>().Property(a => a.TenantId).IsRequired();
+            modelBuilder.Entity<AgreementKeys>().Property(a => a.TenantId).IsRequired();
+            modelBuilder.Entity<Jobs>().Property(j => j.TenantId).IsRequired();
+            modelBuilder.Entity<RiskAnalysis>().Property(r => r.TenantId).IsRequired();
+            modelBuilder.Entity<Partners>().Property(p => p.TenantId).IsRequired();
+
             modelBuilder.Entity<Agreement>()
                 .HasMany(a => a.Keywords)
                 .WithOne(k => k.Agreement)

@@ -1,23 +1,22 @@
 ﻿@model FinanceApp.Data.Entities.Agreement
+
 @{
-    ViewData["Title"] = "Anlaşma Sil";
+    ViewData["Title"] = "Anlaşmayı Sil";
 }
 
-<h2>Anlaşma Sil</h2>
+<h2>Anlaşmayı Sil</h2>
+
 <h3>Bu anlaşmayı silmek istediğinize emin misiniz?</h3>
 <div>
-    <h4>Anlaşma</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">ID</dt>
-        <dd class="col-sm-10">@Model.Id</dd>
-        <dt class="col-sm-2">Ad</dt>
-        <dd class="col-sm-10">@Model.Name</dd>
-    </dl>
+    <h4>@Model.Name</h4>
+    <p><strong>Açıklama:</strong> @Model.Description</p>
+    <p><strong>Başlangıç Tarihi:</strong> @Model.StartDate.ToShortDateString()</p>
+    <p><strong>Durum:</strong> @(Model.IsActive ? "Aktif" : "Pasif")</p>
 </div>
 
-<form asp-action="Delete" method="post">
+<form asp-action="DeleteConfirmed" asp-controller="Agreement" method="post">
     <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Sil</button>
+    <input type="hidden" asp-for="TenantId" value="@Model.TenantId" />
+    <button type="submit" class="btn btn-danger">Evet, Sil</button>
     <a asp-action="Index" class="btn btn-secondary">İptal</a>
 </form>
