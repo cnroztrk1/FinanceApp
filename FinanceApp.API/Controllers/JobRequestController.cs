@@ -1,6 +1,7 @@
-﻿using FinanceApp.Business.Services;
-using FinanceApp.Data.Entities;
+﻿using FinanceApp.API.Models;
+using FinanceApp.Business.Services;
 using FinanceApp.Common;
+using FinanceApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using FinanceApp.API.Hubs;
@@ -31,19 +32,30 @@ namespace FinanceApp.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateJob([FromBody] Jobs job)
+        public async Task<IActionResult> CreateJob([FromBody] JobRequestModel jobRequest)
         {
-            if (job == null)
+            if (jobRequest == null)
                 return BadRequest("Invalid job request.");
 
-            job.TenantId = _tenantProvider.TenantId; // TenantId artık sistemden alınıyor
+            var job = new Jobs
+            {
+                Title = jobRequest.Title,
+                Description = jobRequest.Description,
+                BusinessPartnerId = jobRequest.BusinessPartnerId,
+                AgreementId = jobRequest.AgreementId,
+                ReceivedDate = DateTime.UtcNow, 
+                Status = "Beklemede", 
+                TenantId = _tenantProvider.TenantId 
+            };
 
+            // İş kaydını oluştur
             await _jobService.CreateJobAsync(job);
 
+            // Risk analizi hesapla
             var riskAnalysis = new RiskAnalysis
             {
                 JobId = job.Id,
-                AgreementId = job.AgreementId ?? 0,
+                AgreementId = job.AgreementId.Value,
                 RiskAmount = new Random().Next(1000, 5000),
                 AnalysisDate = DateTime.UtcNow,
                 Comments = "Otomatik risk analizi oluşturuldu.",
@@ -52,6 +64,7 @@ namespace FinanceApp.API.Controllers
 
             await _riskAnalysisService.CreateRiskAnalysisAsync(riskAnalysis);
 
+            // SignalR ile anlık bildirim gönder
             await _hubContext.Clients.Group(job.TenantId.ToString())
                 .SendAsync("ReceiveRiskNotification", $"Job ID: {job.Id}, Risk Amount: {riskAnalysis.RiskAmount}");
 
