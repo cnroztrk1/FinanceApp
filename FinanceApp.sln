@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceApp.Business", "Fina
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceApp.Common", "FinanceApp.Common\FinanceApp.Common.csproj", "{5B7B7DC7-5700-4938-8108-CEABF7926FDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinanceApp.API", "FinanceApp.API\FinanceApp.API.csproj", "{4281A0CF-289C-4E18-B650-E7378C6F07FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{5B7B7DC7-5700-4938-8108-CEABF7926FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B7B7DC7-5700-4938-8108-CEABF7926FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B7B7DC7-5700-4938-8108-CEABF7926FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4281A0CF-289C-4E18-B650-E7378C6F07FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4281A0CF-289C-4E18-B650-E7378C6F07FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4281A0CF-289C-4E18-B650-E7378C6F07FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4281A0CF-289C-4E18-B650-E7378C6F07FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +54,6 @@ Global
 		{129B0A58-0B0E-4214-B4CF-C17D7CDE52FF} = {50E606DB-43ED-4E08-8054-332B033EDB62}
 		{A15F69A7-2AFD-4ED6-8D51-437A960DECB5} = {A17832B3-1D84-4198-866F-11DAF3227348}
 		{5B7B7DC7-5700-4938-8108-CEABF7926FDC} = {A17832B3-1D84-4198-866F-11DAF3227348}
+		{4281A0CF-289C-4E18-B650-E7378C6F07FE} = {C31DB2D6-78BB-45D9-B44F-B7B2E7DF84F0}
 	EndGlobalSection
 EndGlobal
