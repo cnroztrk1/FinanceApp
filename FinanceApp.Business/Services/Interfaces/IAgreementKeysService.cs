@@ -1,6 +1,4 @@
 ﻿using FinanceApp.Data.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace FinanceApp.Business.Services
 {

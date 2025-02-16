@@ -1,10 +1,10 @@
-﻿using FinanceApp.API.Models;
+﻿using FinanceApp.API.Hubs;
+using FinanceApp.API.Models;
 using FinanceApp.Business.Services;
 using FinanceApp.Common;
 using FinanceApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using FinanceApp.API.Hubs;
 
 namespace FinanceApp.API.Controllers
 {

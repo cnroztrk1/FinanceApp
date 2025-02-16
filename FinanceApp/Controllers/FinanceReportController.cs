@@ -1,10 +1,8 @@
 ﻿using FinanceApp.Business.Services;
 using FinanceApp.Common;
-using FinanceApp.Data.Entities;
 using FinanceApp.Presentation.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
 {

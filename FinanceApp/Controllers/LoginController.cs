@@ -1,9 +1,6 @@
-﻿using FinanceApp.Business.Services;
-using FinanceApp.Business.Services.Interfaces;
+﻿using FinanceApp.Business.Services.Interfaces;
 using FinanceApp.Presentation.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
 {
@@ -33,7 +30,7 @@ namespace FinanceApp.Presentation.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", "Geçersiz kullanıcı adı veya şifre.");
+                ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı adı veya şifre.");
             }
             return View(model);
         }
@@ -41,8 +38,8 @@ namespace FinanceApp.Presentation.Controllers
         public IActionResult Logout()
         {
             _httpContextAccessor.HttpContext.Session.Remove("TenantId");
-            _httpContextAccessor.HttpContext.Response.Headers["TenantId"] = "";
-            _httpContextAccessor.HttpContext.Response.Headers["UserName"] = "";
+            _httpContextAccessor.HttpContext.Response.Headers["TenantId"] = string.Empty;
+            _httpContextAccessor.HttpContext.Response.Headers["UserName"] = string.Empty;
             return RedirectToAction("Index");
         }
     }

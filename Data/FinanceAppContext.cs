@@ -1,6 +1,5 @@
 ﻿using FinanceApp.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace FinanceApp.Data
 {

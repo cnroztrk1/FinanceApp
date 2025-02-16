@@ -1,9 +1,7 @@
 ﻿using Data.UnitOfWork;
-using FinanceApp.Data.Entities;
 using FinanceApp.Common;
-using System.Collections.Generic;
+using FinanceApp.Data.Entities;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FinanceApp.Business.Services
 {

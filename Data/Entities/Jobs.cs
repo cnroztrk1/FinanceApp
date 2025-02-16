@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Data.Common;
+﻿using Data.Common;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinanceApp.Data.Entities
 {

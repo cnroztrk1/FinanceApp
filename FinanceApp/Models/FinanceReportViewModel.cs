@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FinanceApp.Presentation.Models
+﻿namespace FinanceApp.Presentation.Models
 {
     public class FinanceReportViewModel
     {

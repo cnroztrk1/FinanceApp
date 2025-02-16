@@ -1,6 +1,5 @@
 ﻿using Data.Common;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Collections.Generic;
 
 namespace FinanceApp.Data.Entities
 {

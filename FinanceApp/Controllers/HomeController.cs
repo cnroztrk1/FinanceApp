@@ -1,7 +1,7 @@
-using System.Diagnostics;
 using FinanceApp.Models;
 using FinanceApp.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace FinanceApp.Controllers
 {

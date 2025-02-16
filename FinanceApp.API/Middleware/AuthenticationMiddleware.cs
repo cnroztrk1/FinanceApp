@@ -1,11 +1,6 @@
-﻿using FinanceApp.Business.Services;
-using FinanceApp.Business.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using FinanceApp.Business.Services.Interfaces;
 using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinanceApp.API.Middleware
 {
@@ -54,7 +49,7 @@ namespace FinanceApp.API.Middleware
                 // TenantId'yi HttpContext'e ekliyoruz.
                 context.Items["TenantId"] = company.Id;
 
-                                _httpContextAccessor.HttpContext.Session.SetInt32("TenantId", company.Id);
+                _httpContextAccessor.HttpContext.Session.SetInt32("TenantId", company.Id);
                 _httpContextAccessor.HttpContext.Session.SetString("UserName", company.UserName);
                 // İşleme devam et
                 await _next(context);

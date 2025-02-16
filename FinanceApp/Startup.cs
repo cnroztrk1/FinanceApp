@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-namespace FinanceApp
+﻿namespace FinanceApp
 {
     public class Startup
     {
@@ -18,7 +16,7 @@ namespace FinanceApp
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
+
         }
     }
 }
