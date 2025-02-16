@@ -5,11 +5,19 @@
 }
 
 <h2>İş Ortakları</h2>
+
+<!-- Filtreleme Alanları -->
+<div class="row mb-3">
+    <div class="col-md-4">
+        <input type="text" id="search" placeholder="İş Ortağı Ara..." class="form-control" />
+    </div>
+</div>
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Yeni İş Ortağı Ekle</a>
 </p>
 
-<table class="table">
+<table class="table table-striped" id="partnerTable">
     <thead>
         <tr>
             <th>Ad</th>
@@ -35,3 +43,48 @@
         }
     </tbody>
 </table>
+
+<!-- İstatistiksel Veriler -->
+<div class="row mt-3">
+    <div class="col-md-4">
+        <div class="alert alert-info">Toplam İş Ortağı: <span id="totalPartners"></span></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var table = $("#partnerTable").DataTable({
+                "paging": true,
+                "searching": false, // Otomatik arama devre dışı, manuel filtreleme var
+                "ordering": true,
+                "info": true,
+                "lengthMenu": [5, 10, 20, 50]
+            });
+
+            var partners = [];
+            $("#partnerTable tbody tr").each(function () {
+                partners.push($(this).find("td:first").text());
+            });
+
+            $("#search").autocomplete({
+                source: partners
+            });
+
+            $("#search").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#partnerTable tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+            // İstatistiksel Verileri Güncelle
+            function updateStatistics() {
+                var totalPartners = $("#partnerTable tbody tr").length;
+                $("#totalPartners").text(totalPartners);
+
+            }
+            updateStatistics();
+        });
+    </script>
+}

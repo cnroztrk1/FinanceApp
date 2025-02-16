@@ -54,7 +54,7 @@ namespace FinanceApp.API.Controllers
             {
                 JobId = job.Id,
                 AgreementId = job.AgreementId.Value,
-                RiskAmount = new Random().Next(1000, 5000),
+                RiskAmount = new Random().Next(0, 100),
                 AnalysisDate = DateTime.UtcNow,
                 Comments = "Otomatik risk analizi oluşturuldu.",
                 TenantId = job.TenantId

@@ -1,36 +1,50 @@
-﻿@model IEnumerable<FinanceApp.Presentation.Models.RiskAnalysisViewModel>
+﻿@model IEnumerable<FinanceApp.Data.Entities.RiskAnalysis>
 
 @{
     ViewData["Title"] = "Risk Analizleri";
 }
 
 <h2>Risk Analizleri</h2>
+
+<!-- Filtreleme Alanları -->
+<div class="row mb-3">
+    <div class="col-md-4">
+        <input type="text" id="search" placeholder="Risk Analizi Ara..." class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <select id="riskLevelFilter" class="form-control">
+            <option value="">Tüm Risk Seviyeleri</option>
+            <option value="Yüksek">Yüksek</option>
+            <option value="Orta">Orta</option>
+            <option value="Düşük">Düşük</option>
+        </select>
+    </div>
+</div>
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Yeni Risk Analizi Ekle</a>
 </p>
 
-<table class="table">
+<table class="table table-striped" id="riskTable">
     <thead>
         <tr>
-            <th>İş Ortağı</th>
-            <th>Anlaşma</th>
-            <th>İş</th>
             <th>Risk Miktarı</th>
             <th>Açıklamalar</th>
             <th>Analiz Tarihi</th>
+            <th>Risk Seviyesi</th>
             <th>İşlemler</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
+            string riskLevel = item.RiskAmount > 75 ? "Yüksek" :
+            item.RiskAmount > 50 ? "Orta" : "Düşük";
             <tr>
-                <td>@item.BusinessPartnerName</td>
-                <td>@item.AgreementName</td>
-                <td>@item.JobTitle</td>
                 <td>@item.RiskAmount</td>
                 <td>@item.Comments</td>
                 <td>@item.AnalysisDate.ToShortDateString()</td>
+                <td>@riskLevel</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Düzenle</a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Sil</a>
@@ -39,3 +53,71 @@
         }
     </tbody>
 </table>
+
+<!-- İstatistiksel Veriler -->
+<div class="row mt-3">
+    <div class="col-md-4">
+        <div class="alert alert-info">Toplam Risk Analizi: <span id="totalRisks"></span></div>
+    </div>
+    <div class="col-md-4">
+        <div class="alert alert-danger">Yüksek Riskler: <span id="highRisk"></span></div>
+    </div>
+    <div class="col-md-4">
+        <div class="alert alert-warning">Orta Riskler: <span id="mediumRisk"></span></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var table = $("#riskTable").DataTable({
+                "paging": true,
+                "searching": false, // Otomatik arama devre dışı, manuel filtreleme var
+                "ordering": true,
+                "info": true,
+                "lengthMenu": [5, 10, 20, 50]
+            });
+
+            var risks = [];
+            $("#riskTable tbody tr").each(function () {
+                risks.push($(this).find("td:nth-child(2)").text()); // Açıklamalar sütunu
+            });
+
+            $("#search").autocomplete({
+                source: risks
+            });
+
+            $("#search").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#riskTable tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+            $("#riskLevelFilter").on("change", function () {
+                var level = $(this).val();
+                $("#riskTable tbody tr").filter(function () {
+                    var rowLevel = $(this).find("td:nth-child(4)").text().trim();
+                    if (level === "" || rowLevel === level) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            // İstatistiksel Verileri Güncelle
+            function updateStatistics() {
+                var totalRisks = $("#riskTable tbody tr").length;
+                var highRisk = $("#riskTable tbody tr:contains('Yüksek')").length;
+                var mediumRisk = $("#riskTable tbody tr:contains('Orta')").length;
+
+                $("#totalRisks").text(totalRisks);
+                $("#highRisk").text(highRisk);
+                $("#mediumRisk").text(mediumRisk);
+            }
+
+            updateStatistics();
+        });
+    </script>
+}
