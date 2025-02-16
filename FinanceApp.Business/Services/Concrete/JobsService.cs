@@ -20,8 +20,17 @@ namespace FinanceApp.Business.Services
 
         public async Task<IEnumerable<Jobs>> GetAllJobsAsync()
         {
-            return (await _unitOfWork.Jobs.GetAllAsync()).Where(j => j.TenantId == _tenantId);
+            var jobs = await _unitOfWork.Jobs.GetAllAsync();
+
+            foreach (var job in jobs)
+            {
+                job.Agreement = await _unitOfWork.Agreements.GetByIdAsync(job.AgreementId ?? 0);
+                job.BusinessPartner = await _unitOfWork.Partners.GetByIdAsync(job.BusinessPartnerId ?? 0);
+            }
+
+            return jobs.Where(j => j.TenantId == _tenantId);
         }
+
 
         public async Task<Jobs> GetJobByIdAsync(int id)
         {

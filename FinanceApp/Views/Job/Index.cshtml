@@ -31,6 +31,8 @@
             <th>Başlık</th>
             <th>Açıklama</th>
             <th>Durum</th>
+            <th>İş Ortağı</th>
+            <th>Anlaşma</th>
             <th>Alınma Tarihi</th>
             <th>İşlemler</th>
         </tr>
@@ -42,6 +44,8 @@
                 <td>@item.Title</td>
                 <td>@item.Description</td>
                 <td>@item.Status</td>
+                <td>@(item.BusinessPartner?.Name ?? "Bilinmiyor")</td>
+                <td>@(item.Agreement?.Name ?? "Bilinmiycaneror")</td>
                 <td>@item.ReceivedDate.ToShortDateString()</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Düzenle</a>
@@ -79,6 +83,10 @@
             var jobs = [];
             $("#jobTable tbody tr").each(function () {
                 jobs.push($(this).find("td:first").text());
+                      jobs.push($(this).find("td:nth-child(2)").text());
+                   jobs.push($(this).find("td:nth-child(4)").text());
+                   jobs.push($(this).find("td:nth-child(5)").text());
+                    jobs.push($(this).find("td:nth-child(6)").text());
             });
 
             $("#search").autocomplete({

@@ -21,7 +21,7 @@ namespace FinanceApp.Presentation.Controllers
         public async Task<IActionResult> Index()
         {
             var agreements = await _agreementService.GetAllAgreementsAsync();
-            return View(agreements.Where(a => a.TenantId == _tenantId));
+            return View(agreements);
         }
 
         public IActionResult Create()

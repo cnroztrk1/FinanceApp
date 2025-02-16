@@ -31,7 +31,7 @@ namespace FinanceApp.Presentation.Controllers
         public async Task<IActionResult> Index()
         {
             var jobs = await _jobService.GetAllJobsAsync();
-            return View(jobs.Where(j => j.TenantId == _tenantId));
+            return View(jobs);
         }
 
         public async Task<IActionResult> Create()

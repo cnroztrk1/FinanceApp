@@ -28,6 +28,9 @@
 <table class="table table-striped" id="riskTable">
     <thead>
         <tr>
+            <th>Anlaşma</th>
+             <th>İş Ortağı</th>
+            <th>İş konusu</th>
             <th>Risk Miktarı</th>
             <th>Açıklamalar</th>
             <th>Analiz Tarihi</th>
@@ -41,6 +44,9 @@
             string riskLevel = item.RiskAmount > 5000 ? "Yüksek" :
             item.RiskAmount > 2000 ? "Orta" : "Düşük";
             <tr>
+                <td>@item.AgreementName</td>
+                <td>@item.BusinessPartnerName</td>
+                <td>@item.JobTitle</td>
                 <td>@item.RiskAmount</td>
                 <td>@item.Comments</td>
                 <td>@item.AnalysisDate.ToShortDateString()</td>
@@ -80,7 +86,12 @@
 
             var risks = [];
             $("#riskTable tbody tr").each(function () {
+                risks.push($(this).find("td:first").text());
                 risks.push($(this).find("td:nth-child(2)").text()); // Açıklamalar sütunu
+                risks.push($(this).find("td:nth-child(3)").text());
+                risks.push($(this).find("td:nth-child(4)").text());
+                risks.push($(this).find("td:nth-child(5)").text());
+                risks.push($(this).find("td:nth-child(6)").text());
             });
 
             $("#search").autocomplete({
@@ -97,7 +108,7 @@
             $("#riskLevelFilter").on("change", function () {
                 var level = $(this).val();
                 $("#riskTable tbody tr").filter(function () {
-                    var rowLevel = $(this).find("td:nth-child(4)").text().trim();
+                    var rowLevel = $(this).find("td:nth-child(7)").text().trim();
                     if (level === "" || rowLevel === level) {
                         $(this).show();
                     } else {

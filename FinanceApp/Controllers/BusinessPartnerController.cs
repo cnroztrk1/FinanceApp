@@ -21,7 +21,7 @@ namespace FinanceApp.Presentation.Controllers
         public async Task<IActionResult> Index()
         {
             var partners = await _partnerService.GetAllPartnersAsync();
-            return View(partners.Where(p => p.TenantId == _tenantId));
+            return View(partners);
         }
 
         public IActionResult Create()

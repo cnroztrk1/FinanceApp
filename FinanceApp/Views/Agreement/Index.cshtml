@@ -27,6 +27,7 @@
 <table class="table table-striped" id="agreementTable">
     <thead>
         <tr>
+            <th>Id</th>
             <th>Ad</th>
             <th>Açıklama</th>
             <th>Başlangıç Tarihi</th>
@@ -38,6 +39,7 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@item.Id</td>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
                 <td>@item.StartDate.ToShortDateString()</td>
@@ -79,6 +81,10 @@
             var agreements = [];
             $("#agreementTable tbody tr").each(function () {
                 agreements.push($(this).find("td:first").text());
+                 agreements.push($(this).find("td:nth-child(2)").text());
+                  agreements.push($(this).find("td:nth-child(3)").text());
+                   agreements.push($(this).find("td:nth-child(4)").text());
+                   agreements.push($(this).find("td:nth-child(5)").text());
             });
 
             $("#search").autocomplete({
@@ -95,7 +101,7 @@
             $("#statusFilter").on("change", function () {
                 var status = $(this).val();
                 $("#agreementTable tbody tr").filter(function () {
-                    var rowStatus = $(this).find("td:nth-child(4)").text().trim();
+                    var rowStatus = $(this).find("td:nth-child(5)").text().trim();
                     if (status === "" || rowStatus === status) {
                         $(this).show();
                     } else {
