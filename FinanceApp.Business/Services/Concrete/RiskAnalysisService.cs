@@ -35,7 +35,7 @@ namespace FinanceApp.Business.Services
 
         public async Task CreateRiskAnalysisAsync(RiskAnalysis riskAnalysis)
         {
-            riskAnalysis.TenantId = _tenantId;
+            riskAnalysis.TenantId = riskAnalysis.TenantId == 0 ? _tenantId : riskAnalysis.TenantId;
             await _unitOfWork.RiskAnalysis.AddAsync(riskAnalysis);
             await _unitOfWork.CompleteAsync();
             _cacheService.Remove(string.Format(_cacheKey, _tenantId)); // Cache temizleme
