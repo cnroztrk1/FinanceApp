@@ -21,6 +21,8 @@ namespace FinanceApp.Data
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<RiskAnalysis> RiskAnalyses { get; set; }
 
+        public DbSet<Company> Companies { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // TenantId eklenen modeller
@@ -29,6 +31,7 @@ namespace FinanceApp.Data
             modelBuilder.Entity<Jobs>().Property(j => j.TenantId).IsRequired();
             modelBuilder.Entity<RiskAnalysis>().Property(r => r.TenantId).IsRequired();
             modelBuilder.Entity<Partners>().Property(p => p.TenantId).IsRequired();
+            modelBuilder.Entity<Company>().Property(x=>x.Id).IsRequired();
 
             modelBuilder.Entity<Agreement>()
                 .HasMany(a => a.Keywords)
@@ -59,6 +62,11 @@ namespace FinanceApp.Data
                 .WithOne(ra => ra.Job)
                 .HasForeignKey<RiskAnalysis>(ra => ra.JobId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Company>().HasData(
+               new Company { Id = 1, UserName = "Caner", Password = Company.HashPassword("123") },
+               new Company { Id = 2, UserName = "HDI", Password = Company.HashPassword("123") }
+           );
 
             base.OnModelCreating(modelBuilder);
         }

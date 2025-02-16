@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
 {
-    public class BusinessPartnerController : Controller
+    public class BusinessPartnerController : BaseController
     {
         private readonly IPartnersService _partnerService;
         private readonly int _tenantId;

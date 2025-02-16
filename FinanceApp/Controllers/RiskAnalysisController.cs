@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
 {
-    public class RiskAnalysisController : Controller
+    public class RiskAnalysisController : BaseController
     {
         private readonly IRiskAnalysisService _riskService;
         private readonly IJobsService _jobService;

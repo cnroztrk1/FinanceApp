@@ -1,10 +1,11 @@
 using System.Diagnostics;
 using FinanceApp.Models;
+using FinanceApp.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 

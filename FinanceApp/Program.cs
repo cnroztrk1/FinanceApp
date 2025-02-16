@@ -1,6 +1,8 @@
 using Data.Repos;
 using Data.UnitOfWork;
 using FinanceApp.Business.Services;
+using FinanceApp.Business.Services.Concrete;
+using FinanceApp.Business.Services.Interfaces;
 using FinanceApp.Common;
 using FinanceApp.Data;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +29,16 @@ builder.Services.AddScoped<IAgreementKeysService, AgreementKeysService>();
 builder.Services.AddScoped<IJobsService, JobService>();
 builder.Services.AddScoped<IPartnersService, BusinessPartnerService>();
 builder.Services.AddScoped<IRiskAnalysisService, RiskAnalysisService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi 30 dakika
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -49,10 +59,12 @@ app.Use(async (context, next) =>
     await next.Invoke();
 });
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

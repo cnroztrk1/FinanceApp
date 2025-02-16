@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
 {
-    public class FinanceReportController : Controller
+    public class FinanceReportController : BaseController
     {
         private readonly IJobsService _jobService;
         private readonly IAgreementService _agreementService;

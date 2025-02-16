@@ -17,6 +17,8 @@ namespace Data.UnitOfWork
         IRepository<Jobs> Jobs { get; }
         IRepository<Partners> Partners { get; }
         IRepository<RiskAnalysis> RiskAnalysis { get; }
+
+        IRepository<Company> Companies { get; }
         Task<int> CompleteAsync();
     }
 

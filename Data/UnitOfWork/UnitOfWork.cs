@@ -18,6 +18,8 @@ namespace Data.UnitOfWork
         public IRepository<Partners> Partners { get; private set; }
         public IRepository<RiskAnalysis> RiskAnalysis { get; private set; }
 
+        public IRepository<Company> Companies { get; private set; }
+
         public UnitOfWork(FinanceAppContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -34,6 +36,7 @@ namespace Data.UnitOfWork
             Jobs = new GenericRepository<Jobs>(context, _tenantId);
             Partners = new GenericRepository<Partners>(context, _tenantId);
             RiskAnalysis = new GenericRepository<RiskAnalysis>(context, _tenantId);
+            Companies = new GenericRepository<Company>(context, _tenantId);
         }
 
         public async Task<int> CompleteAsync()

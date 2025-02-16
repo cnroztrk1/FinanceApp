@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
 {
-    public class AgreementController : Controller
+    public class AgreementController : BaseController
     {
         private readonly IAgreementService _agreementService;
         private readonly int _tenantId;

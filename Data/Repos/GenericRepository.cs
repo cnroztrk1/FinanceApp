@@ -23,6 +23,8 @@ namespace Data.Repos
 
         public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.Where(e => EF.Property<int>(e, "TenantId") == _tenantId).ToListAsync();
 
+        public async Task<IEnumerable<T>> GetAllAsyncNoTenant() => await _dbSet.ToListAsync();
+
         public async Task AddAsync(T entity)
         {
             _dbSet.Add(entity);

@@ -10,6 +10,8 @@ namespace Data.Repos
     {
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
+
+        Task<IEnumerable<T>> GetAllAsyncNoTenant();
         Task AddAsync(T entity);
         void Update(T entity);
         void Remove(T entity);

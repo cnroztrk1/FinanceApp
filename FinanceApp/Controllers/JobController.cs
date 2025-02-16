@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FinanceApp.Presentation.Controllers
 {
-    public class JobController : Controller
+    public class JobController : BaseController
     {
         private readonly IJobsService _jobService;
         private readonly IPartnersService _businessPartnerService;
