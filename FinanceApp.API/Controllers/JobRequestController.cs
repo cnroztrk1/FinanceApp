@@ -43,15 +43,13 @@ namespace FinanceApp.API.Controllers
                 Description = jobRequest.Description,
                 BusinessPartnerId = jobRequest.BusinessPartnerId,
                 AgreementId = jobRequest.AgreementId,
-                ReceivedDate = DateTime.UtcNow, 
-                Status = "Beklemede", 
-                TenantId = _tenantProvider.TenantId 
+                ReceivedDate = DateTime.UtcNow,
+                Status = "Beklemede",
+                TenantId = _tenantProvider.TenantId
             };
 
-            // İş kaydını oluştur
             await _jobService.CreateJobAsync(job);
 
-            // Risk analizi hesapla
             var riskAnalysis = new RiskAnalysis
             {
                 JobId = job.Id,
@@ -64,9 +62,8 @@ namespace FinanceApp.API.Controllers
 
             await _riskAnalysisService.CreateRiskAnalysisAsync(riskAnalysis);
 
-            // SignalR ile anlık bildirim gönder
-            await _hubContext.Clients.Group(job.TenantId.ToString())
-                .SendAsync("ReceiveRiskNotification", $"Job ID: {job.Id}, Risk Amount: {riskAnalysis.RiskAmount}");
+            string notificationMessage = $"Yeni Risk Analizi Yapıldı! Job ID: {job.Id}, Risk Amount: {riskAnalysis.RiskAmount}";
+            await _hubContext.Clients.All.SendAsync("ReceiveGlobalNotification", notificationMessage);
 
             return Ok(new { message = "Job received and risk analysis completed.", riskAmount = riskAnalysis.RiskAmount });
         }

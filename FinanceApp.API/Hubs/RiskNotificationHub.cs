@@ -10,6 +10,11 @@ namespace FinanceApp.API.Hubs
             await Clients.Group(tenantId).SendAsync("ReceiveRiskNotification", message);
         }
 
+        public async Task SendNotificationToAll(string message)
+        {
+            await Clients.All.SendAsync("ReceiveGlobalNotification", message);
+        }
+
         public override async Task OnConnectedAsync()
         {
             var tenantId = Context.GetHttpContext()?.Request.Query["tenantId"];
