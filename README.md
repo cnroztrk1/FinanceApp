@@ -21,10 +21,10 @@ Default Kullanıcılar ve şifreleri:
 - **HDI - 123**
 
 ### 6️⃣  API Kullanımı
-**FinanceApp.API i Çalıştırın **
-**Finance.API dan istek atmadan önce bir kez arayüzü f5 ile yenileyin ve hub bağlantısını sağlayın.Bunu yapmazsanız bildirimler düşmeyecektir.**
-**swagger yapılandırmasında authorize kısmından kullanıcıyı girmelisiniz aksi takdirde apiden istek atamazsınız.**
-**Girdikten sonra** 
+-**FinanceApp.API i Çalıştırın**
+-**Finance.API dan istek atmadan önce bir kez arayüzü f5 ile yenileyin ve hub bağlantısını sağlayın.Bunu yapmazsanız bildirimler düşmeyecektir.**
+-**swagger yapılandırmasında authorize kısmından kullanıcıyı girmelisiniz aksi takdirde apiden istek atamazsınız.**
+-**Girdikten sonra** 
 **örnek request json
 {
   "title": "Kredi Risk Değerlendirmesi",
@@ -32,7 +32,7 @@ Default Kullanıcılar ve şifreleri:
   "businessPartnerId": 1,
   "agreementId": 2
 }**
-**Trash datada Caner için 1 den 5 e HDI için 6 dan 10 a TenantId ler tanımlanmıştır. Kiracısı olmayan iş ortağı veya anlaşmaya istek atamazsınız.**
+-**Trash datada Caner için 1 den 5 e HDI için 6 dan 10 a TenantId ler tanımlanmıştır. Kiracısı olmayan iş ortağı veya anlaşmaya istek atamazsınız.**
 ### 7️⃣  Gerçek Zamanlı Bildirimler SignalR
 **API den atılan istek apiden ve arayüzden giren kullanıcı aynı ise ekranda bildirim olarak belirecek 5 saniye sonra kaybolacak şekilde ayarlandı.**
  **Footera sayfa yenilenmedikçe kaybolmayan bir notifikasyonda eklendi.**
