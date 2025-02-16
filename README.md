@@ -5,22 +5,22 @@
 - MSSQL Server
 ### 2️⃣ **Projeyi Klonlayın**
 git clone https://github.com/cnroztrk1/FinanceApp.git
-### 3 Bağımlılıkları Yükleyin
+### 3️⃣  Bağımlılıkları Yükleyin
 dotnet restore
-### 4 Veritabanın Configure Edin
+### 4️⃣  Veritabanın Configure Edin
 
 appsettings.json içerisinde veritabanı bağlantı dizesini düzenleyin:
 
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost;Database=FinanceAppDb;User Id=sa;Password=yourpassword;"
 }
-### 5 Uygulamayı Çalıştırın
+### 5️⃣  Uygulamayı Çalıştırın
 Uygulamayı çalıştırdıktan sonra otomatik sizin için FinanceAppDb oluşacak ve bir kaç trash data eklenecek. Ve giriş ekranına yönlendirecek.
 Default Kullanıcılar ve şifreleri: 
 Caner - 123
 HDI - 123
 
-###6 API Kullanımı
+### 6️⃣  API Kullanımı
 FinanceApp.API i Çalıştırın 
 swagger yapılandırmasında authorize kısmından kullanıcıyı girmelisiniz aksi takdirde apiden istek atamazsınız.
 Girdikten sonra örnek request json
@@ -31,7 +31,7 @@ Girdikten sonra örnek request json
   "agreementId": 2
 }
 Trash datada Caner için 1 den 5 e HDI için 6 dan 10 a TenantId ler tanımlanmıştır. Kiracısı olmayan iş ortağı veya anlaşmaya istek atamazsınız.
-### 7 Gerçek Zamanlı Bildirimler SignalR
+### 7️⃣  Gerçek Zamanlı Bildirimler SignalR
 API den atılan istek apiden ve arayüzden giren kullanıcı aynı ise ekranda bildirim olarak belirecek 5 saniye sonra kaybolacak şekilde ayarlandı. Footera sayfa yenilenmedikçe kaybolmayan bir notifikasyonda eklendi.
 Eğer apiden login olduğunuz kullanıcı arayüzde login olduğunuz kullanıcıdan farklı ise risk analizi ve iş konusu kaydedilecek ama bildirim gösterilmeyecektir.
 # FinanceApp
@@ -51,9 +51,9 @@ Eğer apiden login olduğunuz kullanıcı arayüzde login olduğunuz kullanıcı
 - **SignalR** (Gerçek zamanlı bildirimler için)
 - **MSSQL** (Veritabanı)
 - **ASP.NET Core Web API**
-- **HTML
---**CSS
-- **Javascript
+- **HTML**
+- **CSS**
+- **Javascript**
 ## ⚡ Özellikler
 
 - 🌍 **Multi-Tenant Desteği**  
