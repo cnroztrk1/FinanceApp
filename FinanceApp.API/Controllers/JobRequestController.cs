@@ -80,7 +80,7 @@ namespace FinanceApp.API.Controllers
                 RiskAmount = new Random().Next(1000, 10000),//Random değerde bir risk miktarı oluşturuyoruz --geliştirilebilir 
                 AnalysisDate = DateTime.UtcNow,
                 Comments = "Otomatik risk analizi oluşturuldu.",
-                TenantId = job.TenantId
+                TenantId = tenantId
             };
 
             await _riskAnalysisService.CreateRiskAnalysisAsync(riskAnalysis);
