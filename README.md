@@ -26,7 +26,10 @@ dotnet restore
 ### 5️⃣ **Uygulamayı Çalıştırın**
 - Uygulamayı çalıştırdıktan sonra **FinanceAppDb** otomatik olarak oluşturulacak ve bazı test verileri (trash data) eklenecektir.
 - Ardından giriş ekranına yönlendirileceksiniz.
-
+- Uygulamala portları : 
+- Arayüz için : **https://localhost:5001/**
+- API için : **https://localhost:7286/swagger/index.html**
+- **Portlarınızda başka bir uygulama açıksa kapatınız**
 📌 **Varsayılan Kullanıcılar ve Şifreler:**
 - **Caner - 123**
 - **HDI - 123**
