@@ -21,7 +21,6 @@ function getCookie(name) {
 }
 
 const tenantId = getTenantId();
-console.log("TenantId:", tenantId);
 
 // API'ye uygun SignalR bağlantısını ayarla
 const signalRUrl = "https://localhost:7286/riskhub"; // SignalR Hub URL
@@ -41,7 +40,6 @@ connection.start()
 
 // Bildirim alınca çalışacak olay
 connection.on("ReceiveRiskNotification", function (message) {
-    console.log("Bildirim alındı. TenantId:", tenantId);
     showNotification(message);
     addNotificationToFooter(message);
     clearCacheForTenant();

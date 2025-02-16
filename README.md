@@ -22,6 +22,7 @@ Default Kullanıcılar ve şifreleri:
 
 ### 6️⃣  API Kullanımı
 FinanceApp.API i Çalıştırın 
+Finance.API dan istek atmadan önce bir kez arayüzü f5 ile yenileyin ve hub bağlantısını sağlayın.Bunu yapmazsanız bildirimler düşmeyecektir.
 swagger yapılandırmasında authorize kısmından kullanıcıyı girmelisiniz aksi takdirde apiden istek atamazsınız.
 Girdikten sonra örnek request json
 {
