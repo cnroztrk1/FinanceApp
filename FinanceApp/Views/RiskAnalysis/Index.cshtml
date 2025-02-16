@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FinanceApp.Data.Entities.RiskAnalysis>
+﻿@model IEnumerable<FinanceApp.Presentation.Models.RiskAnalysisViewModel>
 
 @{
     ViewData["Title"] = "Risk Analizleri";
@@ -12,6 +12,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>İş Ortağı</th>
+            <th>Anlaşma</th>
+            <th>İş</th>
             <th>Risk Miktarı</th>
             <th>Açıklamalar</th>
             <th>Analiz Tarihi</th>
@@ -22,6 +25,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@item.BusinessPartnerName</td>
+                <td>@item.AgreementName</td>
+                <td>@item.JobTitle</td>
                 <td>@item.RiskAmount</td>
                 <td>@item.Comments</td>
                 <td>@item.AnalysisDate.ToShortDateString()</td>

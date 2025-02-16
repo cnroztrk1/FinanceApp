@@ -165,7 +165,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(job);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

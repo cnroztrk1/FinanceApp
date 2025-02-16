@@ -20,12 +20,6 @@
         <label asp-for="RiskAnalysis.AnalysisDate">Analiz Tarihi</label>
         <input asp-for="RiskAnalysis.AnalysisDate" type="date" class="form-control" required />
     </div>
-    <div class="form-group">
-        <label asp-for="RiskAnalysis.JobId">İş</label>
-        <select asp-for="RiskAnalysis.JobId" asp-items="Model.Jobs" class="form-control">
-            <option value="">Seçiniz...</option>
-        </select>
-    </div>
     <input type="hidden" asp-for="RiskAnalysis.TenantId" value="@Model.RiskAnalysis.TenantId" />
     <button type="submit" class="btn btn-success">Güncelle</button>
     <a asp-action="Index" class="btn btn-secondary">Geri</a>
