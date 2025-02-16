@@ -5,16 +5,6 @@ namespace FinanceApp.API.Hubs
 {
     public class RiskNotificationHub : Hub
     {
-        public async Task SendRiskNotification(string tenantId, string message)
-        {
-            await Clients.Group(tenantId).SendAsync("ReceiveRiskNotification", message);
-        }
-
-        public async Task SendNotificationToAll(string message)
-        {
-            await Clients.All.SendAsync("ReceiveGlobalNotification", message);
-        }
-
         public override async Task OnConnectedAsync()
         {
             var tenantId = Context.GetHttpContext()?.Request.Query["tenantId"];
@@ -34,5 +24,11 @@ namespace FinanceApp.API.Hubs
             }
             await base.OnDisconnectedAsync(exception);
         }
+
+        public async Task SendRiskNotification(string tenantId, string message)
+        {
+            await Clients.Group(tenantId).SendAsync("ReceiveRiskNotification", message);
+        }
+
     }
 }

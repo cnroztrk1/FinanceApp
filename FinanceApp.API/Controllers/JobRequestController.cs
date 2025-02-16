@@ -38,21 +38,19 @@ namespace FinanceApp.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateJob([FromBody] JobRequestModel jobRequest)
         {
-
             int tenantId = (int)HttpContext.Items["TenantId"];
 
             if (jobRequest == null)
-                return BadRequest("Invalid job request.");
+                return BadRequest(new { message = "Invalid job request." });
 
             var businessPartner = await _partnerService.GetPartnerByIdAsync(jobRequest.BusinessPartnerId);
-            if (businessPartner == null)
+            if (businessPartner == null || businessPartner.TenantId != tenantId)
             {
                 return BadRequest(new { message = "Belirtilen BusinessPartnerId bu TenantId için mevcut değil!" });
             }
 
-            // Agreement kontrolü
             var agreement = await _agreementService.GetAgreementByIdAsync(jobRequest.AgreementId);
-            if (agreement == null)
+            if (agreement == null || agreement.TenantId != tenantId)
             {
                 return BadRequest(new { message = "Belirtilen AgreementId bu TenantId için mevcut değil!" });
             }
@@ -83,9 +81,12 @@ namespace FinanceApp.API.Controllers
             await _riskAnalysisService.CreateRiskAnalysisAsync(riskAnalysis);
 
             string notificationMessage = $"Yeni Risk Analizi Yapıldı! Job ID: {job.Id}, Risk Amount: {riskAnalysis.RiskAmount}";
-            await _hubContext.Clients.All.SendAsync("ReceiveGlobalNotification", notificationMessage);
+
+            // Bildirim sadece aynı TenantId grubuna gönderilecek
+            await _hubContext.Clients.Group(tenantId.ToString()).SendAsync("ReceiveRiskNotification", notificationMessage);
 
             return Ok(new { message = "İş konusu oluşturuldu ve Risk analizi yapıldı.", riskAmount = riskAnalysis.RiskAmount });
         }
+
     }
 }

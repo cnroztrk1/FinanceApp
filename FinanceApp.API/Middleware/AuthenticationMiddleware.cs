@@ -26,6 +26,13 @@ namespace FinanceApp.API.Middleware
         {
             try
             {
+                // SignalR bağlantıları için kimlik doğrulamasını atla
+                if (context.Request.Path.StartsWithSegments("/riskhub"))
+                {
+                    await _next(context);
+                    return;
+                }
+
                 if (!context.Request.Headers.ContainsKey("UserName") || !context.Request.Headers.ContainsKey("Password"))
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -47,7 +54,7 @@ namespace FinanceApp.API.Middleware
                 // TenantId'yi HttpContext'e ekliyoruz.
                 context.Items["TenantId"] = company.Id;
 
-                _httpContextAccessor.HttpContext.Session.SetInt32("TenantId", company.Id);
+                                _httpContextAccessor.HttpContext.Session.SetInt32("TenantId", company.Id);
                 _httpContextAccessor.HttpContext.Session.SetString("UserName", company.UserName);
                 // İşleme devam et
                 await _next(context);

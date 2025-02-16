@@ -1,27 +1,27 @@
-﻿const tenantId = 1; // Örnek Tenant ID
+﻿// TenantId'yi Session'dan çek
+const tenantId = sessionStorage.getItem("TenantId") || 1;
 
 // API'ye uygun SignalR bağlantısını ayarla
-const apiBaseUrl = "https://localhost:7286/riskhub"; // API'nin çalıştığı port
+const apiBaseUrl = "https://localhost:7286/riskhub";
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl(`${apiBaseUrl}?tenantId=${tenantId}`, {
-        withCredentials: true // CORS için kimlik doğrulamayı aktif et
+        withCredentials: true
     })
     .withAutomaticReconnect()
     .build();
 
 // Bağlantıyı başlat
 connection.start()
-    .then(() => console.log(`SignalR bağlantısı kuruldu (${apiBaseUrl}).`))
+    .then(() => console.log(`SignalR bağlantısı kuruldu (TenantId: ${tenantId}).`))
     .catch(err => console.error("SignalR bağlantı hatası:", err));
 
 // Bildirim alınca çalışacak olay
-connection.on("ReceiveGlobalNotification", function (message) {
+connection.on("ReceiveRiskNotification", function (message) {
     showNotification(message);
     addNotificationToFooter(message);
 });
 
-// Bildirim gösterme fonksiyonu
 function showNotification(message) {
     const notification = document.createElement("div");
     notification.classList.add("notification");
@@ -34,11 +34,9 @@ function showNotification(message) {
     }, 5000);
 }
 
-// Footer'a kalıcı bildirim ekleme fonksiyonu
 function addNotificationToFooter(message) {
     let footer = document.getElementById("notification-footer");
 
-    // Eğer footer yoksa oluşturalım
     if (!footer) {
         footer = document.createElement("div");
         footer.id = "notification-footer";
