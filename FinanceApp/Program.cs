@@ -49,16 +49,6 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-// Middleware ekleyelim
-app.Use(async (context, next) =>
-{
-    if (!context.Request.Headers.ContainsKey("TenantId"))
-    {
-        context.Request.Headers["TenantId"] = "1"; // Varsayýlan Tenant ID
-    }
-    await next.Invoke();
-});
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

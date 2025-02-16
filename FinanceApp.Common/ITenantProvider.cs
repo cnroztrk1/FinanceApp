@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http.Extensions;
 using System;
 
 namespace FinanceApp.Common
@@ -11,7 +13,6 @@ namespace FinanceApp.Common
     public class TenantProvider : ITenantProvider
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-
         private readonly int _defaultTenantId = 1; // Varsayılan Tenant ID
 
         public TenantProvider(IHttpContextAccessor httpContextAccessor)
@@ -19,27 +20,22 @@ namespace FinanceApp.Common
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public int TenantId // Burada şimdilik http header dan aldım. Daha sonrasında domaine göre veya herhangi bir auth sistemi ile burası değiştirilebilir.
-                            // Firma bazlı Program.cs de belirlenip test edilebilir.
+        public int TenantId
         {
             get
             {
                 try
                 {
-                    var tenantIdString = _httpContextAccessor.HttpContext?.Request.Headers["TenantId"];
-                    if (string.IsNullOrEmpty(tenantIdString))
+                    var tenantId = _httpContextAccessor.HttpContext?.Session.GetInt32("TenantId");
+
+                    if (tenantId == null || tenantId == 0)
                     {
                         return _defaultTenantId;
                     }
 
-                    if (int.TryParse(tenantIdString, out var tenantId))
-                    {
-                        return tenantId;
-                    }
-
-                    return _defaultTenantId;
+                    return tenantId.Value;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return _defaultTenantId;
                 }

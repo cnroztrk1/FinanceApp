@@ -2,6 +2,7 @@
 using FinanceApp.Data;
 using FinanceApp.Data.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
@@ -24,13 +25,16 @@ namespace Data.UnitOfWork
         {
             _context = context;
 
-            // TenantId'yi HTTP Header'dan veya Cookie'den al
-            var tenantIdString = httpContextAccessor.HttpContext?.Request.Headers["TenantId"].ToString();
-            if (!int.TryParse(tenantIdString, out _tenantId))
+            var tenantId = httpContextAccessor.HttpContext.Session.GetInt32("TenantId");
+
+            if (tenantId == null || tenantId == 0)
             {
                 _tenantId = 1; // Varsayılan TenantId
             }
-
+            else
+            {
+                _tenantId = tenantId.Value;
+            }
             Agreements = new GenericRepository<Agreement>(context, _tenantId);
             AgreementKeys = new GenericRepository<AgreementKeys>(context, _tenantId);
             Jobs = new GenericRepository<Jobs>(context, _tenantId);

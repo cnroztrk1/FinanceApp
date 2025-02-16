@@ -13,7 +13,7 @@
     </div>
     <div class="form-group">
         <label asp-for="RiskAnalysis.Comments">Açıklamalar</label>
-        <textarea asp-for="RiskAnalysis.Comments" class="form-control"></textarea>
+        <textarea asp-for="RiskAnalysis.Comments" class="form-control" required></textarea>
     </div>
     <div class="form-group">
         <label asp-for="RiskAnalysis.AnalysisDate">Analiz Tarihi</label>
@@ -21,7 +21,7 @@
     </div>
     <div class="form-group">
         <label asp-for="RiskAnalysis.JobId">İş</label>
-        <select asp-for="RiskAnalysis.JobId" asp-items="Model.Jobs" class="form-control">
+        <select asp-for="RiskAnalysis.JobId" asp-items="Model.Jobs" class="form-control" required>
             <option value="">Seçiniz...</option>
         </select>
     </div>

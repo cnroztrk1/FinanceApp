@@ -29,13 +29,13 @@
     </div>
     <div class="form-group">
         <label asp-for="Job.BusinessPartnerId">İş Ortağı</label>
-        <select asp-for="Job.BusinessPartnerId" asp-items="Model.BusinessPartners" class="form-control">
+        <select asp-for="Job.BusinessPartnerId" asp-items="Model.BusinessPartners" class="form-control" required>
             <option value="">Seçiniz...</option>
         </select>
     </div>
     <div class="form-group">
         <label asp-for="Job.AgreementId">Anlaşma</label>
-        <select asp-for="Job.AgreementId" asp-items="Model.Agreements" class="form-control">
+        <select asp-for="Job.AgreementId" asp-items="Model.Agreements" class="form-control" required>
             <option value="">Seçiniz...</option>
         </select>
     </div>
