@@ -8,8 +8,8 @@ git clone https://github.com/cnroztrk1/FinanceApp.git
 ### 3️⃣  Bağımlılıkları Yükleyin
 dotnet restore
 ### 4️⃣  Veritabanın Configure Edin
-
-appsettings.json içerisinde veritabanı bağlantı dizesini düzenleyin:
+Arayüzdeki ve API daki
+appsettings.json içerisinde veritabanı bağlantı dizesini düzenleyin kendi localhost bağlantınıza göre düzenleyin:
 
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost;Database=FinanceAppDb;User Id=sa;Password=yourpassword;"
@@ -17,8 +17,8 @@ appsettings.json içerisinde veritabanı bağlantı dizesini düzenleyin:
 ### 5️⃣  Uygulamayı Çalıştırın
 Uygulamayı çalıştırdıktan sonra otomatik sizin için FinanceAppDb oluşacak ve bir kaç trash data eklenecek. Ve giriş ekranına yönlendirecek.
 Default Kullanıcılar ve şifreleri: 
-Caner - 123
-HDI - 123
+- **Caner - 123**
+- **HDI - 123**
 
 ### 6️⃣  API Kullanımı
 FinanceApp.API i Çalıştırın 
