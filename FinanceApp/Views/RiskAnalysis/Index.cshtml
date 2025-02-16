@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FinanceApp.Data.Entities.RiskAnalysis>
+﻿@model IEnumerable<FinanceApp.Presentation.Models.RiskAnalysisViewModel>
 
 @{
     ViewData["Title"] = "Risk Analizleri";
@@ -38,8 +38,8 @@
     <tbody>
         @foreach (var item in Model)
         {
-            string riskLevel = item.RiskAmount > 75 ? "Yüksek" :
-            item.RiskAmount > 50 ? "Orta" : "Düşük";
+            string riskLevel = item.RiskAmount > 5000 ? "Yüksek" :
+            item.RiskAmount > 2000 ? "Orta" : "Düşük";
             <tr>
                 <td>@item.RiskAmount</td>
                 <td>@item.Comments</td>

@@ -1,0 +1,52 @@
+﻿@model FinanceApp.Presentation.Models.FinanceReportViewModel
+
+@{
+    ViewData["Title"] = "Mali Raporlar ve Öngörüler";
+}
+
+<h2>Mali Raporlar ve Öngörüler</h2>
+
+<!-- İstatistiksel Veriler -->
+<div class="row mt-3">
+    <div class="col-md-4">
+        <div class="alert alert-info">Toplam İş: <span>@Model.TotalJobs</span></div>
+    </div>
+    <div class="col-md-4">
+        <div class="alert alert-success">Toplam Anlaşma: <span>@Model.TotalAgreements</span></div>
+    </div>
+    <div class="col-md-4">
+        <div class="alert alert-danger">Toplam Risk Miktarı: <span>@Model.TotalRiskAmount.ToString("C")</span></div>
+    </div>
+</div>
+
+<!-- Risk Analizleri Yıllık Grafik -->
+<canvas id="riskChart"></canvas>
+
+@section Scripts {
+    <script>
+        var ctx = document.getElementById('riskChart').getContext('2d');
+        var riskData = {
+            labels: @Html.Raw(Json.Serialize(Model.RiskAnalysisData.Select(x => x.Year))),
+            datasets: [{
+                label: 'Yıllık Risk Miktarı',
+                data: @Html.Raw(Json.Serialize(Model.RiskAnalysisData.Select(x => x.TotalRisk))),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var riskChart = new Chart(ctx, {
+            type: 'bar',
+            data: riskData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
