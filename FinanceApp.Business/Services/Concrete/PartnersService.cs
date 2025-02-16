@@ -27,6 +27,11 @@ namespace FinanceApp.Business.Services
             return partner?.TenantId == _tenantId ? partner : null;
         }
 
+        public async Task<IEnumerable<Partners>> GetPartnerByTenantId(int id)
+        {
+            return (await _unitOfWork.Partners.GetAllAsyncNoTenant()).Where(p => p.TenantId == id);
+        }
+
         public async Task CreatePartnerAsync(Partners partner)
         {
             partner.TenantId = _tenantId;

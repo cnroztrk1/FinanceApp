@@ -1,5 +1,16 @@
-﻿// TenantId'yi Session'dan çek
-const tenantId = sessionStorage.getItem("TenantId") || 1;
+﻿function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return null;
+}
+
+const tenantId = getCookie("TenantId") || 1;
+console.log(tenantId);
 
 // API'ye uygun SignalR bağlantısını ayarla
 const apiBaseUrl = "https://localhost:7286/riskhub";
@@ -18,6 +29,7 @@ connection.start()
 
 // Bildirim alınca çalışacak olay
 connection.on("ReceiveRiskNotification", function (message) {
+    console.log(tenantId);
     showNotification(message);
     addNotificationToFooter(message);
 });

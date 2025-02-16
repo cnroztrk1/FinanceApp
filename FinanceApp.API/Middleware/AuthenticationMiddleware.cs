@@ -38,7 +38,7 @@ namespace FinanceApp.API.Middleware
                 string username = context.Request.Headers["UserName"];
                 string password = context.Request.Headers["Password"];
 
-                var company = await loginService.Authenticate(username, password);
+                var company = await loginService.AuthenticateForService(username, password);
                 if (company == null)
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -49,8 +49,7 @@ namespace FinanceApp.API.Middleware
                 // TenantId'yi HttpContext'e ekliyoruz.
                 context.Items["TenantId"] = company.Id;
 
-                _httpContextAccessor.HttpContext.Session.SetInt32("TenantId", company.Id);
-                _httpContextAccessor.HttpContext.Session.SetString("UserName", company.UserName);
+
                 // İşleme devam et
                 await _next(context);
             }

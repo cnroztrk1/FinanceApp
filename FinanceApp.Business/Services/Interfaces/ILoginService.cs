@@ -7,5 +7,7 @@ namespace FinanceApp.Business.Services.Interfaces
     public interface ILoginService
     {
         Task<Company> Authenticate(string username, string password);
+
+        Task<Company> AuthenticateForService(string username, string password);
     }
 }

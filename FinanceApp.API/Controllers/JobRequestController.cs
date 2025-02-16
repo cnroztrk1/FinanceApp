@@ -43,13 +43,18 @@ namespace FinanceApp.API.Controllers
             if (jobRequest == null)
                 return BadRequest(new { message = "Invalid job request." });
 
-            var businessPartner = await _partnerService.GetPartnerByIdAsync(jobRequest.BusinessPartnerId);
+            var PartnersByTenant =await  _partnerService.GetPartnerByTenantId(tenantId);
+
+            var businessPartner = PartnersByTenant.Where(x=>x.Id==jobRequest.BusinessPartnerId).FirstOrDefault();
             if (businessPartner == null || businessPartner.TenantId != tenantId)
             {
                 return BadRequest(new { message = "Belirtilen BusinessPartnerId bu TenantId için mevcut değil!" });
             }
 
-            var agreement = await _agreementService.GetAgreementByIdAsync(jobRequest.AgreementId);
+            var agreementByTenant =await _agreementService.GetAgreementByTenantId(tenantId);
+
+
+            var agreement = agreementByTenant.Where(x => x.Id == jobRequest.AgreementId).FirstOrDefault();
             if (agreement == null || agreement.TenantId != tenantId)
             {
                 return BadRequest(new { message = "Belirtilen AgreementId bu TenantId için mevcut değil!" });

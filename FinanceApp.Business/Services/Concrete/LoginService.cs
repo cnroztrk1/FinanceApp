@@ -26,11 +26,34 @@ namespace FinanceApp.Business.Services.Concrete
             var company = companies.FirstOrDefault(c => c.UserName == username && c.Password == hashedPassword);
             if (company != null)
             {
-                _httpContextAccessor.HttpContext.Session.SetInt32("TenantId", company.Id);
-                _httpContextAccessor.HttpContext.Session.SetString("UserName", company.UserName);
-                _httpContextAccessor.HttpContext.Response.Headers["TenantId"] = company.Id.ToString();
-                _httpContextAccessor.HttpContext.Response.Headers["UserName"] = company.UserName.ToString();
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("TenantId", company.Id.ToString(), new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,  // HTTPS kullanımına göre değiştirilebilir
+                    IsEssential = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddMinutes(30)
+                });
+
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("UserName", company.UserName, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    IsEssential = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddMinutes(30)
+                });
+
             }
+
+            return company;
+        }
+        public async Task<Company> AuthenticateForService(string username, string password)
+        {
+            var companies = await _unitOfWork.Companies.GetAllAsyncNoTenant();
+            var hashedPassword = Company.HashPassword(password);
+
+            var company = companies.FirstOrDefault(c => c.UserName == username && c.Password == hashedPassword);
 
             return company;
         }

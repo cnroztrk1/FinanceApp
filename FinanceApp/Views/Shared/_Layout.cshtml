@@ -38,10 +38,10 @@
 
                     <!-- Kullanıcı Bilgisi ve Çıkış -->
                     <ul class="navbar-nav">
-                        @if (Context.Session.GetString("UserName") != null)
+                        @if (Context.Request.Cookies["UserName"] != null)
                         {
                             <li class="nav-item">
-                                <span class="nav-link">Hoşgeldin, @Context.Session.GetString("UserName")</span>
+                                <span class="nav-link">Hoşgeldin, @Context.Request.Cookies["UserName"]</span>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-danger" asp-controller="Login" asp-action="Logout">Çıkış Yap</a>
@@ -79,7 +79,6 @@
     <script src="~/js/jquery-ui.min.js"></script>
     <script src="~/js/signalr.min.js"></script>
     <script src="~/js/chart.js"></script>
-    <script src="~/js/signalr-client.js"></script> <!-- SignalR istemcimizi çağırıyoruz -->
     <script src="~/js/signalr-client.js"></script> <!-- SignalR istemcimizi çağırıyoruz -->
     @RenderSection("Scripts", required: false)
 </body>

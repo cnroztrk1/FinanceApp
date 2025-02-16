@@ -37,9 +37,10 @@ namespace FinanceApp.Presentation.Controllers
 
         public IActionResult Logout()
         {
-            _httpContextAccessor.HttpContext.Session.Remove("TenantId");
-            _httpContextAccessor.HttpContext.Response.Headers["TenantId"] = string.Empty;
-            _httpContextAccessor.HttpContext.Response.Headers["UserName"] = string.Empty;
+            _httpContextAccessor.HttpContext.Session.Clear();
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("TenantId");
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("UserName");
+
             return RedirectToAction("Index");
         }
     }

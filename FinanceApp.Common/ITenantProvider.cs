@@ -25,14 +25,14 @@ namespace FinanceApp.Common
             {
                 try
                 {
-                    var tenantId = _httpContextAccessor.HttpContext?.Session.GetInt32("TenantId");
+                    var tenantId = _httpContextAccessor.HttpContext.Request.Cookies["TenantId"];
 
-                    if (tenantId == null || tenantId == 0)
+                    if (tenantId == null || int.Parse(tenantId) == 0)
                     {
                         return _defaultTenantId;
                     }
 
-                    return tenantId.Value;
+                    return int.Parse(tenantId);
                 }
                 catch (Exception)
                 {

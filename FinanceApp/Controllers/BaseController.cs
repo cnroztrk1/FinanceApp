@@ -6,12 +6,13 @@ namespace FinanceApp.Presentation.Controllers
     {
         public override void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)
         {
-            var tenantId = context.HttpContext.Session.GetInt32("TenantId");
+            var tenantId = context.HttpContext.Request.Cookies["TenantId"];
 
-            if (tenantId == null || tenantId == 0)
+            if (string.IsNullOrEmpty(tenantId))
             {
                 context.Result = new RedirectToActionResult("Index", "Login", null);
             }
+
 
             base.OnActionExecuting(context);
         }

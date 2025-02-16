@@ -24,15 +24,15 @@ namespace Data.UnitOfWork
         {
             _context = context;
 
-            var tenantId = httpContextAccessor.HttpContext.Session.GetInt32("TenantId");
+            var tenantId = httpContextAccessor.HttpContext.Request.Cookies["TenantId"];
 
-            if (tenantId == null || tenantId == 0)
+            if (tenantId == null || int.Parse(tenantId) == 0)
             {
                 _tenantId = 1; // Varsayılan TenantId
             }
             else
             {
-                _tenantId = tenantId.Value;
+                _tenantId = int.Parse(tenantId);
             }
             Agreements = new GenericRepository<Agreement>(context, _tenantId);
             AgreementKeys = new GenericRepository<AgreementKeys>(context, _tenantId);

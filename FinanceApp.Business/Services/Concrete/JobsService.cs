@@ -38,7 +38,7 @@ namespace FinanceApp.Business.Services
 
         public async Task CreateJobAsync(Jobs job)
         {
-            job.TenantId = _tenantId;
+            job.TenantId = job.TenantId==0 ? _tenantId : job.TenantId;
             await _unitOfWork.Jobs.AddAsync(job);
             await _unitOfWork.CompleteAsync();
         }

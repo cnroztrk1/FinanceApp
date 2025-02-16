@@ -21,6 +21,11 @@ namespace FinanceApp.Business.Services
             return (await _unitOfWork.Agreements.GetAllAsync()).Where(a => a.TenantId == _tenantId);
         }
 
+        public async Task<IEnumerable<Agreement>> GetAgreementByTenantId(int id)
+        {
+            return (await _unitOfWork.Agreements.GetAllAsyncNoTenant()).Where(p => p.TenantId == id);
+        }
+
         public async Task<Agreement> GetAgreementByIdAsync(int id)
         {
             var agreement = await _unitOfWork.Agreements.GetByIdAsync(id);
