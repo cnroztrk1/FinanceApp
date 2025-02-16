@@ -1,24 +1,30 @@
 ﻿using Data.UnitOfWork;
 using FinanceApp.Common;
 using FinanceApp.Data.Entities;
-using System.Linq;
 
 namespace FinanceApp.Business.Services
 {
-    public class BusinessPartnerService : IPartnersService //İş ortakları için Create Read Update Delete (CRUD) işlemleri
+    public class BusinessPartnerService : IPartnersService // İş ortakları için Create Read Update Delete (CRUD) işlemleri
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICacheService _cacheService;
         private readonly int _tenantId;
+        private readonly string _cacheKey = "partners_{0}"; // Tenant bazlı cache key
 
-        public BusinessPartnerService(IUnitOfWork unitOfWork, ITenantProvider tenantProvider)
+        public BusinessPartnerService(IUnitOfWork unitOfWork, ITenantProvider tenantProvider, ICacheService cacheService)
         {
             _unitOfWork = unitOfWork;
             _tenantId = tenantProvider.TenantId;
+            _cacheService = cacheService;
         }
 
         public async Task<IEnumerable<Partners>> GetAllPartnersAsync()
         {
-            return (await _unitOfWork.Partners.GetAllAsync()).Where(p => p.TenantId == _tenantId);
+            string cacheKey = string.Format(_cacheKey, _tenantId);
+            return await _cacheService.GetOrCreateAsync(cacheKey, async () =>
+            {
+                return (await _unitOfWork.Partners.GetAllAsync()).Where(p => p.TenantId == _tenantId);
+            }, TimeSpan.FromMinutes(30)); // 30 dakika cache'de tut
         }
 
         public async Task<Partners> GetPartnerByIdAsync(int id)
@@ -37,6 +43,7 @@ namespace FinanceApp.Business.Services
             partner.TenantId = _tenantId;
             await _unitOfWork.Partners.AddAsync(partner);
             await _unitOfWork.CompleteAsync();
+            _cacheService.Remove(string.Format(_cacheKey, _tenantId)); // Cache temizleme
         }
 
         public async Task UpdatePartnerAsync(Partners partner)
@@ -45,6 +52,7 @@ namespace FinanceApp.Business.Services
             {
                 _unitOfWork.Partners.Update(partner);
                 await _unitOfWork.CompleteAsync();
+                _cacheService.Remove(string.Format(_cacheKey, _tenantId)); // Güncelleme sonrası cache temizleme
             }
         }
 
@@ -55,6 +63,7 @@ namespace FinanceApp.Business.Services
             {
                 _unitOfWork.Partners.Remove(partner);
                 await _unitOfWork.CompleteAsync();
+                _cacheService.Remove(string.Format(_cacheKey, _tenantId)); // Silme sonrası cache temizleme
             }
         }
     }

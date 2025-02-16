@@ -63,6 +63,7 @@
             @RenderBody()
         </main>
     </div>
+    <div id="tenant-id-container" data-tenant-id="@Context.Request.Cookies["TenantId"]"></div>
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; @DateTime.Now.Year - FinanceApp

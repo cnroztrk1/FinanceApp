@@ -1,4 +1,15 @@
-﻿function getCookie(name) {
+﻿function getTenantId() {
+    // Önce HTML'deki div içinden TenantId'yi al
+    const tenantDiv = document.getElementById("tenant-id-container");
+    if (tenantDiv) {
+        return tenantDiv.getAttribute("data-tenant-id") || "1";
+    }
+
+    // Eğer HTML'den alınamazsa, cookie'den al
+    return getCookie("TenantId") || "1";
+}
+
+function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i].trim();
@@ -9,14 +20,15 @@
     return null;
 }
 
-const tenantId = getCookie("TenantId") || 1;
-console.log(tenantId);
+const tenantId = getTenantId();
+console.log("TenantId:", tenantId);
 
 // API'ye uygun SignalR bağlantısını ayarla
-const apiBaseUrl = "https://localhost:7286/riskhub";
+const signalRUrl = "https://localhost:7286/riskhub"; // SignalR Hub URL
+const cacheClearUrl = "https://localhost:5001/api/cache/clear"; // 5001 portundaki API
 
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl(`${apiBaseUrl}?tenantId=${tenantId}`, {
+    .withUrl(`${signalRUrl}?tenantId=${tenantId}`, {
         withCredentials: true
     })
     .withAutomaticReconnect()
@@ -29,10 +41,31 @@ connection.start()
 
 // Bildirim alınca çalışacak olay
 connection.on("ReceiveRiskNotification", function (message) {
-    console.log(tenantId);
+    console.log("Bildirim alındı. TenantId:", tenantId);
     showNotification(message);
     addNotificationToFooter(message);
+    clearCacheForTenant();
 });
+
+// Cache temizleme fonksiyonu (5001 portundaki API'yi çağırıyor)
+function clearCacheForTenant() {
+    const tenantId = getTenantId(); // Güncel TenantId'yi tekrar al
+
+    fetch(`${cacheClearUrl}?tenantId=${tenantId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log(`Cache başarıyla temizlendi (TenantId: ${tenantId}).`);
+            } else {
+                console.error("Cache temizleme başarısız oldu.");
+            }
+        })
+        .catch(error => console.error("Cache temizleme hatası:", error));
+}
 
 function showNotification(message) {
     const notification = document.createElement("div");

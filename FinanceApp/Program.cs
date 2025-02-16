@@ -31,6 +31,9 @@ builder.Services.AddScoped<IPartnersService, BusinessPartnerService>();
 builder.Services.AddScoped<IRiskAnalysisService, RiskAnalysisService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 
+builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession(options =>

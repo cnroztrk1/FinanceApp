@@ -44,6 +44,8 @@ builder.Services.AddScoped<IRiskAnalysisService, RiskAnalysisService>();
 builder.Services.AddScoped<IPartnersService, BusinessPartnerService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IAgreementService, AgreementService>();
+builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
 // SignalR ve CORS Eklentileri
 builder.Services.AddSignalR();
 builder.Services.AddScoped<ITenantProvider, TenantProvider>();
