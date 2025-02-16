@@ -5,8 +5,6 @@ using FinanceApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using FinanceApp.API.Hubs;
-using System;
-using System.Threading.Tasks;
 
 namespace FinanceApp.API.Controllers
 {
@@ -16,17 +14,23 @@ namespace FinanceApp.API.Controllers
     {
         private readonly IJobsService _jobService;
         private readonly IRiskAnalysisService _riskAnalysisService;
+        private readonly IAgreementService _agreementService;
+        private readonly IPartnersService _partnerService;
         private readonly IHubContext<RiskNotificationHub> _hubContext;
         private readonly ITenantProvider _tenantProvider;
 
         public JobRequestController(
             IJobsService jobService,
             IRiskAnalysisService riskAnalysisService,
+            IAgreementService agreementService,
+            IPartnersService partnerService,
             IHubContext<RiskNotificationHub> hubContext,
             ITenantProvider tenantProvider)
         {
             _jobService = jobService;
             _riskAnalysisService = riskAnalysisService;
+            _agreementService = agreementService;
+            _partnerService = partnerService;
             _hubContext = hubContext;
             _tenantProvider = tenantProvider;
         }
@@ -34,8 +38,24 @@ namespace FinanceApp.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateJob([FromBody] JobRequestModel jobRequest)
         {
+
+            int tenantId = (int)HttpContext.Items["TenantId"];
+
             if (jobRequest == null)
                 return BadRequest("Invalid job request.");
+
+            var businessPartner = await _partnerService.GetPartnerByIdAsync(jobRequest.BusinessPartnerId);
+            if (businessPartner == null)
+            {
+                return BadRequest(new { message = "Belirtilen BusinessPartnerId bu TenantId için mevcut değil!" });
+            }
+
+            // Agreement kontrolü
+            var agreement = await _agreementService.GetAgreementByIdAsync(jobRequest.AgreementId);
+            if (agreement == null)
+            {
+                return BadRequest(new { message = "Belirtilen AgreementId bu TenantId için mevcut değil!" });
+            }
 
             var job = new Jobs
             {
@@ -45,7 +65,7 @@ namespace FinanceApp.API.Controllers
                 AgreementId = jobRequest.AgreementId,
                 ReceivedDate = DateTime.UtcNow,
                 Status = "Beklemede",
-                TenantId = _tenantProvider.TenantId
+                TenantId = tenantId
             };
 
             await _jobService.CreateJobAsync(job);
@@ -65,7 +85,7 @@ namespace FinanceApp.API.Controllers
             string notificationMessage = $"Yeni Risk Analizi Yapıldı! Job ID: {job.Id}, Risk Amount: {riskAnalysis.RiskAmount}";
             await _hubContext.Clients.All.SendAsync("ReceiveGlobalNotification", notificationMessage);
 
-            return Ok(new { message = "Job received and risk analysis completed.", riskAmount = riskAnalysis.RiskAmount });
+            return Ok(new { message = "İş konusu oluşturuldu ve Risk analizi yapıldı.", riskAmount = riskAnalysis.RiskAmount });
         }
     }
 }

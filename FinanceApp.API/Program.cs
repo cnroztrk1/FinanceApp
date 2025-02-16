@@ -1,11 +1,13 @@
 using Data.Repos;
 using Data.UnitOfWork;
 using FinanceApp.API.Hubs;
+using FinanceApp.API.Middleware;
 using FinanceApp.Business.Services;
+using FinanceApp.Business.Services.Concrete;
+using FinanceApp.Business.Services.Interfaces;
 using FinanceApp.Common;
 using FinanceApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<FinanceAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDistributedMemoryCache(); // Session için gerekli
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+builder.Services.AddHttpContextAccessor(); // Session'ý kullanmak için gerekli
 // Dependency Injection
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
@@ -32,17 +42,61 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IJobsService, JobService>();
 builder.Services.AddScoped<IRiskAnalysisService, RiskAnalysisService>();
 builder.Services.AddScoped<IPartnersService, BusinessPartnerService>();
-
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IAgreementService, AgreementService>();
 // SignalR ve CORS Eklentileri
 builder.Services.AddSignalR();
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ITenantProvider, TenantProvider>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FinanceApp API", Version = "v1" });
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "FinanceApp API", Version = "v1" });
+
+    // UserName ve Password Header Tanýmlamalarý
+    c.AddSecurityDefinition("UserName", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "UserName",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Description = "API istekleri için kullanýcý adýnýzý buraya girin."
+    });
+
+    c.AddSecurityDefinition("Password", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Password",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Description = "API istekleri için þifrenizi buraya girin."
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "UserName"
+                }
+            },
+            new string[] {}
+        },
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Password"
+                }
+            },
+            new string[] {}
+        }
+    });
 });
+
 
 builder.Services.AddControllers();
 
@@ -62,7 +116,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseAuthorization();
-
+app.UseSession();
+app.UseMiddleware<AuthenticationMiddleware>();
 // SignalR için CORS'i aktif et
 app.UseCors(corsPolicyName);
 app.MapHub<RiskNotificationHub>("/riskhub").RequireCors(corsPolicyName);
