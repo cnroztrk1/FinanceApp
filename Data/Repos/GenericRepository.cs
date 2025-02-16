@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace Data.Repos
 {
+
+    //Generic bir repository bu repoya verilen tablo için aşağıdaki metodların kullanılabilmesini sağlıyor
     public class GenericRepository<T> : IRepository<T> where T : class
     {
         protected readonly FinanceAppContext _context;

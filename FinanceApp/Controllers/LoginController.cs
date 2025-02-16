@@ -21,7 +21,7 @@ namespace FinanceApp.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(LoginViewModel model)
+        public async Task<IActionResult> Index(LoginViewModel model) //Login Companies içerisindeki data ile uyuşursa giriş yapar
         {
             if (ModelState.IsValid)
             {

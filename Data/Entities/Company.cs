@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FinanceApp.Data.Entities
 {
-    public class Company
+    public class Company // Firmalar için tablo 
     {
         [Key]
         public int Id { get; set; }

@@ -38,7 +38,7 @@ namespace FinanceApp.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateJob([FromBody] JobRequestModel jobRequest)
         {
-            int tenantId = (int)HttpContext.Items["TenantId"];
+            int tenantId = (int)HttpContext.Items["TenantId"]; //TenantId middleware den alıyoruz
 
             if (jobRequest == null)
                 return BadRequest(new { message = "Invalid job request." });
@@ -72,7 +72,7 @@ namespace FinanceApp.API.Controllers
             {
                 JobId = job.Id,
                 AgreementId = job.AgreementId.Value,
-                RiskAmount = new Random().Next(1000, 10000),
+                RiskAmount = new Random().Next(1000, 10000),//Random değerde bir risk miktarı oluşturuyoruz --geliştirilebilir 
                 AnalysisDate = DateTime.UtcNow,
                 Comments = "Otomatik risk analizi oluşturuldu.",
                 TenantId = job.TenantId

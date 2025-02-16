@@ -17,13 +17,13 @@ namespace FinanceApp.Presentation.Controllers
             _tenantId = tenantProvider.TenantId;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()//Listeleme
         {
             var partners = await _partnerService.GetAllPartnersAsync();
             return View(partners);
         }
 
-        public IActionResult Create()
+        public IActionResult Create()//Oluşturma
         {
             ViewBag.TenantId = _tenantId;
             return View();
@@ -31,7 +31,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Partners partner)
+        public async Task<IActionResult> Create(Partners partner) //Oluşturma
         {
             if (ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(partner);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)//Düzenleme
         {
             var partner = await _partnerService.GetPartnerByIdAsync(id);
             if (partner == null || partner.TenantId != _tenantId)
@@ -52,7 +52,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Partners partner)
+        public async Task<IActionResult> Edit(Partners partner)//Düzenleme
         {
             if (ModelState.IsValid && partner.TenantId == _tenantId)
             {
@@ -62,7 +62,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(partner);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)//Silme
         {
             var partner = await _partnerService.GetPartnerByIdAsync(id);
             if (partner == null || partner.TenantId != _tenantId)
@@ -72,7 +72,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)//Silme Onay
         {
             var partner = await _partnerService.GetPartnerByIdAsync(id);
             if (partner != null && partner.TenantId == _tenantId)

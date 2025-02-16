@@ -93,18 +93,18 @@
                 risks.push($(this).find("td:nth-child(5)").text());
                 risks.push($(this).find("td:nth-child(6)").text());
             });
-
+                      //Otomatik tamamlama metodu verilere göre değeri tamamlıyor
             $("#search").autocomplete({
                 source: risks
             });
-
+            //arama
             $("#search").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
                 $("#riskTable tbody tr").filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
             });
-
+            //durum filtresi
             $("#riskLevelFilter").on("change", function () {
                 var level = $(this).val();
                 $("#riskTable tbody tr").filter(function () {

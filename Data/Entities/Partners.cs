@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace FinanceApp.Data.Entities
 {
-    public class Partners : TenantBase
+    public class Partners : TenantBase // İş ortakları 
     {
         public int Id { get; set; }
         public string Name { get; set; }

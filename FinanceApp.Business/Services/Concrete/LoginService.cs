@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace FinanceApp.Business.Services.Concrete
 {
-    public class LoginService : ILoginService
+    public class LoginService : ILoginService //Login servis tenantlar için serviste ve arayüzde buradan ayırıyoruz. Giriş yapılan veya auth edilen kullanıcı burada sessiona setleniyor
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;

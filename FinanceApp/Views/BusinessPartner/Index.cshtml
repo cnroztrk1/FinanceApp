@@ -63,7 +63,7 @@
                 "info": true,
                 "lengthMenu": [5, 10, 20, 50]
             });
-
+                  //Verileri otomatik tamamlama için bir değişkene atıyoruz
             var partners = [];
             $("#partnerTable tbody tr").each(function () {
                 partners.push($(this).find("td:first").text());
@@ -72,11 +72,11 @@
                    partners.push($(this).find("td:nth-child(4)").text());
                    partners.push($(this).find("td:nth-child(5)").text());
             });
-
+                 //Otomatik tamamlama metodu verilere göre değeri tamamlıyor
             $("#search").autocomplete({
                 source: partners
             });
-
+            //arama
             $("#search").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
                 $("#partnerTable tbody tr").filter(function () {

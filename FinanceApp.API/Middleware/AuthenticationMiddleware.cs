@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FinanceApp.API.Middleware
 {
-    public class AuthenticationMiddleware
+    public class AuthenticationMiddleware //İsteklere auth ekliyoruz web soket hariç
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<AuthenticationMiddleware> _logger;

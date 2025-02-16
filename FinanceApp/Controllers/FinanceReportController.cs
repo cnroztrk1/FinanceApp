@@ -25,7 +25,7 @@ namespace FinanceApp.Presentation.Controllers
             _tenantProvider = tenantProvider;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() //Listeleme
         {
             var tenantId = _tenantProvider.TenantId;
 

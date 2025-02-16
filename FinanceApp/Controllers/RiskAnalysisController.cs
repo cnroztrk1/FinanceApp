@@ -29,7 +29,7 @@ namespace FinanceApp.Presentation.Controllers
             _tenantProvider = tenantProvider;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() //Listeleme
         {
             var risks = await _riskService.GetAllRiskAnalysesAsync();
             var tenantId = _tenantProvider.TenantId;
@@ -52,7 +52,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(riskViewModels);
         }
 
-        public IActionResult Create()
+        public IActionResult Create()//Oluşturma
         {
             ViewBag.TenantId = _tenantProvider.TenantId;
             return View();
@@ -60,7 +60,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(RiskAnalysis riskAnalysis)
+        public async Task<IActionResult> Create(RiskAnalysis riskAnalysis)//Oluşturma
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(riskAnalysis);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)//Düzenleme
         {
             var riskAnalysis = await _riskService.GetRiskAnalysisByIdAsync(id);
             if (riskAnalysis == null || riskAnalysis.TenantId != _tenantProvider.TenantId)
@@ -87,7 +87,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(RiskAnalysisCreateViewModel viewModel)
+        public async Task<IActionResult> Edit(RiskAnalysisCreateViewModel viewModel)//Düzenleme
         {
             if (ModelState.IsValid && viewModel.RiskAnalysis.TenantId == _tenantProvider.TenantId)
             {
@@ -97,7 +97,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)//Silme
         {
             var riskAnalysis = await _riskService.GetRiskAnalysisByIdAsync(id);
             if (riskAnalysis == null || riskAnalysis.TenantId != _tenantProvider.TenantId)
@@ -108,7 +108,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)//Silme Onay
         {
             var riskAnalysis = await _riskService.GetRiskAnalysisByIdAsync(id);
             if (riskAnalysis != null && riskAnalysis.TenantId == _tenantProvider.TenantId)

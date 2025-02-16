@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FinanceApp.Data.Entities
 {
-    public class Jobs : TenantBase
+    public class Jobs : TenantBase // İş konuları 
     {
         public int Id { get; set; }
 

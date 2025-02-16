@@ -17,13 +17,13 @@ namespace FinanceApp.Presentation.Controllers
             _tenantId = tenantProvider.TenantId;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()//Listeleme
         {
             var agreements = await _agreementService.GetAllAgreementsAsync();
             return View(agreements);
         }
 
-        public IActionResult Create()
+        public IActionResult Create() //Oluşturma
         {
             ViewBag.TenantId = _tenantId;
             return View();
@@ -31,7 +31,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Agreement agreement)
+        public async Task<IActionResult> Create(Agreement agreement)//Oluşturma
         {
             if (ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(agreement);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id) //Düzenleme
         {
             var agreement = await _agreementService.GetAgreementByIdAsync(id);
             if (agreement == null || agreement.TenantId != _tenantId)
@@ -52,7 +52,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Agreement agreement)
+        public async Task<IActionResult> Edit(Agreement agreement)//Düzenleme
         {
             if (ModelState.IsValid && agreement.TenantId == _tenantId)
             {
@@ -62,7 +62,7 @@ namespace FinanceApp.Presentation.Controllers
             return View(agreement);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)//Silme
         {
             var agreement = await _agreementService.GetAgreementByIdAsync(id);
             if (agreement == null || agreement.TenantId != _tenantId)
@@ -72,7 +72,7 @@ namespace FinanceApp.Presentation.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id) //Silme Onay
         {
             var agreement = await _agreementService.GetAgreementByIdAsync(id);
             if (agreement != null && agreement.TenantId == _tenantId)

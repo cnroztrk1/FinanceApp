@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FinanceApp.Business.Services
 {
-    public class RiskAnalysisService : IRiskAnalysisService
+    public class RiskAnalysisService : IRiskAnalysisService // Risk analizi için Create Read Update Delete (CRUD) işlemleri
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly int _tenantId;

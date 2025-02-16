@@ -18,7 +18,8 @@ namespace FinanceApp.Common
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public int TenantId
+        public int TenantId //Ortak bir tenentId provider ı burada bütün sistemi Sessiona bağladık.
+                            //Değiştirilmek istenirse burda domain subdomain bir auth-token sistemi gibi yöntemlerle değiştirebiliriz core tarafı burası
         {
             get
             {

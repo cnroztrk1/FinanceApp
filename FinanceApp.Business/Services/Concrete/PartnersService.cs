@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FinanceApp.Business.Services
 {
-    public class BusinessPartnerService : IPartnersService
+    public class BusinessPartnerService : IPartnersService //İş ortakları için Create Read Update Delete (CRUD) işlemleri
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly int _tenantId;

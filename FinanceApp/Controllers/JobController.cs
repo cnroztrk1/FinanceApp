@@ -27,7 +27,7 @@ namespace FinanceApp.Presentation.Controllers
             _tenantId = tenantProvider.TenantId;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()//Listeleme
         {
             var jobs = await _jobService.GetAllJobsAsync();
             return View(jobs);
@@ -58,7 +58,7 @@ namespace FinanceApp.Presentation.Controllers
             };
 
             return View(viewModel);
-        }
+        }//Oluşturma
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -91,7 +91,7 @@ namespace FinanceApp.Presentation.Controllers
                 });
 
             return View(viewModel);
-        }
+        }//Oluşturma
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -122,7 +122,7 @@ namespace FinanceApp.Presentation.Controllers
             };
 
             return View(viewModel);
-        }
+        }//Düzenleme
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -154,7 +154,7 @@ namespace FinanceApp.Presentation.Controllers
                 });
 
             return View(viewModel);
-        }
+        }//Düzenleme
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -162,7 +162,7 @@ namespace FinanceApp.Presentation.Controllers
             if (job == null || job.TenantId != _tenantId)
                 return NotFound();
             return View(job);
-        }
+        }//Silme
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -174,6 +174,6 @@ namespace FinanceApp.Presentation.Controllers
                 await _jobService.DeleteJobAsync(id);
             }
             return RedirectToAction(nameof(Index));
-        }
+        }//Silme Onay
     }
 }

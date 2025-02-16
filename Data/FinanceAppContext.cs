@@ -8,7 +8,7 @@ namespace FinanceApp.Data
         public FinanceAppContext(DbContextOptions<FinanceAppContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.EnsureCreated(); //DB yoksa burdan oluşturuluyor.
         }
 
         public DbSet<Agreement> Agreements { get; set; }
@@ -20,6 +20,7 @@ namespace FinanceApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Model bağlantıları 
             modelBuilder.Entity<Agreement>().Property(a => a.TenantId).IsRequired();
             modelBuilder.Entity<AgreementKeys>().Property(a => a.TenantId).IsRequired();
             modelBuilder.Entity<Jobs>().Property(j => j.TenantId).IsRequired();
@@ -56,6 +57,8 @@ namespace FinanceApp.Data
                 .WithOne(ra => ra.Job)
                 .HasForeignKey<RiskAnalysis>(ra => ra.JobId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //DB de Modellere rastgele veriler ekleniyor.
 
             modelBuilder.Entity<Company>().HasData(
                 new Company { Id = 1, UserName = "Caner", Password = Company.HashPassword("123") },

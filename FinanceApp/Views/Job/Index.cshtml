@@ -79,7 +79,7 @@
                 "info": true,
                 "lengthMenu": [5, 10, 20, 50]
             });
-
+                //Verileri otomatik tamamlama için bir değişkene atıyoruz
             var jobs = [];
             $("#jobTable tbody tr").each(function () {
                 jobs.push($(this).find("td:first").text());
@@ -88,18 +88,18 @@
                    jobs.push($(this).find("td:nth-child(5)").text());
                     jobs.push($(this).find("td:nth-child(6)").text());
             });
-
+              //Otomatik tamamlama metodu verilere göre değeri tamamlıyor
             $("#search").autocomplete({
                 source: jobs
             });
-
+            //arama
             $("#search").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
                 $("#jobTable tbody tr").filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
             });
-
+            //durum filtresi
             $("#statusFilter").on("change", function () {
                 var status = $(this).val();
                 $("#jobTable tbody tr").filter(function () {

@@ -21,9 +21,10 @@
 
 <!-- Risk Analizleri Yıllık Grafik -->
 <canvas id="riskChart"></canvas>
-
+ 
 @section Scripts {
     <script>
+        //2D Chart 
         var ctx = document.getElementById('riskChart').getContext('2d');
         var riskData = {
             labels: @Html.Raw(Json.Serialize(Model.RiskAnalysisData.Select(x => x.Year))),

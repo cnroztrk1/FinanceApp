@@ -4,7 +4,7 @@ using System;
 
 namespace FinanceApp.Data.Entities
 {
-    public class RiskAnalysis : TenantBase
+    public class RiskAnalysis : TenantBase //Risk Analizleri
     {
         public int Id { get; set; }
         public decimal RiskAmount { get; set; }

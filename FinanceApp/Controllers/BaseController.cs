@@ -2,7 +2,7 @@
 
 namespace FinanceApp.Presentation.Controllers
 {
-    public class BaseController : Controller
+    public class BaseController : Controller //Login için BaseController işlem controllerları buradan türetildi. Eğer login yapılmadıysa logine yönlendirir.
     {
         public override void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)
         {

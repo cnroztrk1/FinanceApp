@@ -6,6 +6,7 @@ using System;
 
 namespace Data.UnitOfWork
 {
+    //Ortak bir unitOfwork classı burdaki tablolar üzerinden repo işlemleri gerçekleştiriliyor.
     public class UnitOfWork : IUnitOfWork
     {
         private readonly FinanceAppContext _context;

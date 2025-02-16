@@ -2,7 +2,7 @@
 
 namespace FinanceApp.API.Hubs
 {
-    public class RiskNotificationHub : Hub
+    public class RiskNotificationHub : Hub //İstekleri gnöderecek olan hub
     {
         public override async Task OnConnectedAsync()
         {
@@ -23,7 +23,7 @@ namespace FinanceApp.API.Hubs
             }
             await base.OnDisconnectedAsync(exception);
         }
-
+        //Gönderildiği yer
         public async Task SendRiskNotification(string tenantId, string message)
         {
             await Clients.Group(tenantId).SendAsync("ReceiveRiskNotification", message);

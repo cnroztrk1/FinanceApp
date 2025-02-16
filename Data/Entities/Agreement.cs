@@ -4,7 +4,7 @@ using System;
 
 namespace FinanceApp.Data.Entities
 {
-    public class Agreement : TenantBase
+    public class Agreement : TenantBase //Anlaşmalar tablosu tenantbase den tenantId kalıtım alıyor
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,8 +13,10 @@ namespace FinanceApp.Data.Entities
         public DateTime? EndDate { get; set; }
         public bool IsActive { get; set; }
 
+        //İlgili Collection nesneleri ihtiyaca bağlı veri çekmek için
+
         [ValidateNever]
-        public ICollection<AgreementKeys> Keywords { get; set; }
+        public ICollection<AgreementKeys> Keywords { get; set; } 
         [ValidateNever]
         public ICollection<Jobs> Jobs { get; set; }
         [ValidateNever]
