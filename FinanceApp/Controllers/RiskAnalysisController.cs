@@ -115,6 +115,7 @@ namespace FinanceApp.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(RiskAnalysisCreateViewModel viewModel)
         {
+            viewModel.RiskAnalysis.TenantId= _tenantProvider.TenantId;
             if (ModelState.IsValid)
             {
                 await _riskService.UpdateRiskAnalysisAsync(viewModel.RiskAnalysis);
