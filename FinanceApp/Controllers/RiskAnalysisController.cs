@@ -1,4 +1,4 @@
-﻿using FinanceApp.Business.Services;
+using FinanceApp.Business.Services;
 using FinanceApp.Common;
 using FinanceApp.Data.Entities;
 using FinanceApp.Presentation.Models;
@@ -52,58 +52,91 @@ namespace FinanceApp.Presentation.Controllers
             return View(riskViewModels);
         }
 
-        public IActionResult Create()//Oluşturma
+        public async Task<IActionResult> Create()//Oluşturma
         {
-            ViewBag.TenantId = _tenantProvider.TenantId;
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(RiskAnalysis riskAnalysis)//Oluşturma
-        {
-            if (ModelState.IsValid)
-            {
-                riskAnalysis.TenantId = _tenantProvider.TenantId;
-                await _riskService.CreateRiskAnalysisAsync(riskAnalysis);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(riskAnalysis);
-        }
-
-        public async Task<IActionResult> Edit(int id)//Düzenleme
-        {
-            var riskAnalysis = await _riskService.GetRiskAnalysisByIdAsync(id);
-            if (riskAnalysis == null || riskAnalysis.TenantId != _tenantProvider.TenantId)
-                return NotFound();
-
+            var jobs = await _jobService.GetAllJobsAsync();
+            // Oluşturulan iş listesi üzerinden, jobId->agreementId mappingini elde ediyoruz.
+            var jobAgreementMapping = jobs.ToDictionary(j => j.Id, j => j.AgreementId);
             var viewModel = new RiskAnalysisCreateViewModel
             {
-                RiskAnalysis = riskAnalysis
+                RiskAnalysis = new RiskAnalysis(),
+                Jobs = jobs.Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Value = j.Id.ToString(),
+                    Text = j.Title
+                }),
+                JobAgreementsJson = System.Text.Json.JsonSerializer.Serialize(jobAgreementMapping)
             };
-
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(RiskAnalysisCreateViewModel viewModel)//Düzenleme
+        public async Task<IActionResult> Create(RiskAnalysisCreateViewModel viewModel)
         {
-            if (ModelState.IsValid && viewModel.RiskAnalysis.TenantId == _tenantProvider.TenantId)
+            if (ModelState.IsValid)
+            {
+                // RiskAnalysis.AgreementId, client-side script tarafından job seçimine göre doldurulmuş olmalı
+                await _riskService.CreateRiskAnalysisAsync(viewModel.RiskAnalysis);
+                return RedirectToAction(nameof(Index));
+            }
+            // Hata durumunda, dropdown listesini ve mapping bilgisini tekrar dolduralım.
+            var jobs = await _jobService.GetAllJobsAsync();
+            viewModel.Jobs = jobs.Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = j.Id.ToString(),
+                Text = j.Title
+            });
+            viewModel.JobAgreementsJson = System.Text.Json.JsonSerializer.Serialize(jobs.ToDictionary(j => j.Id, j => j.AgreementId));
+            return View(viewModel);
+        }
+        // Risk analizi düzenleme ekranı (GET): /RiskAnalysis/Edit/{id}
+        public async Task<IActionResult> Edit(int id)
+        {
+            var risk = await _riskService.GetRiskAnalysisByIdAsync(id);
+            if (risk == null)
+                return NotFound();
+            var jobs = await _jobService.GetAllJobsAsync();
+            var jobAgreementMapping = jobs.ToDictionary(j => j.Id, j => j.AgreementId);
+            var viewModel = new RiskAnalysisCreateViewModel
+            {
+                RiskAnalysis = risk,
+                Jobs = jobs.Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Value = j.Id.ToString(),
+                    Text = j.Title
+                }),
+                JobAgreementsJson = System.Text.Json.JsonSerializer.Serialize(jobAgreementMapping)
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(RiskAnalysisCreateViewModel viewModel)
+        {
+            if (ModelState.IsValid)
             {
                 await _riskService.UpdateRiskAnalysisAsync(viewModel.RiskAnalysis);
                 return RedirectToAction(nameof(Index));
             }
+            var jobs = await _jobService.GetAllJobsAsync();
+            viewModel.Jobs = jobs.Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = j.Id.ToString(),
+                Text = j.Title
+            });
+            viewModel.JobAgreementsJson = System.Text.Json.JsonSerializer.Serialize(jobs.ToDictionary(j => j.Id, j => j.AgreementId));
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Delete(int id)//Silme
-        {
-            var riskAnalysis = await _riskService.GetRiskAnalysisByIdAsync(id);
-            if (riskAnalysis == null || riskAnalysis.TenantId != _tenantProvider.TenantId)
-                return NotFound();
 
-            return View(riskAnalysis);
+        public async Task<IActionResult> Delete(int id)
+        {
+            var risk = await _riskService.GetRiskAnalysisByIdAsync(id);
+            if (risk == null)
+                return NotFound();
+            return View(risk);
         }
 
         [HttpPost]
